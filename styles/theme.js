@@ -12,6 +12,18 @@ const theme = {
     medium: 600,
     bold: 700
   },
+  styles: {
+    global: {
+      html: {
+        scrollBehavior: "smooth"
+      },
+      '#__next': {
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }
+    }
+  },
 };
 
 export default theme;

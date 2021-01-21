@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
+import { Heading, Flex, Button } from "@chakra-ui/react"
 
 export default function Home() {
   const auth = useAuth();
@@ -10,21 +11,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main >
-        <h1>
+      <Flex
+        as="main"
+        direction="column"
+        justify="center"
+        alignItems="center"
+        h="100vh"
+      >
+        <Heading as="h1" isTruncated>
           Feedback koa🐨
-        </h1>
-
-        <p>
-          Get started by editing{' '}
-          <code>pages/index.js</code>
-        </p>
+          </Heading>
         {auth?.user ?
           (<button onClick={() => auth.signout()}>Sign out</button>) :
-          (<button onClick={() => auth.signinWithGithub()}>Sign in</button>)}
-        <div>{auth?.user?.email}</div>
-
-      </main>
+          (<Button mt={4} size="sm" onClick={() => auth.signinWithGithub()}>Sign in</Button>)}
+      </Flex>
     </div>
   )
 }
