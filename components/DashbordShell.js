@@ -61,7 +61,6 @@ const DashboardShell = ({ children }) => {
               <BreadcrumbLink color="gray.700" fontSize="sm" >Sites</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-          <Heading>Sites</Heading>
           {children}
         </Flex>
       </Flex>

@@ -12,16 +12,36 @@ import {
   Input,
   Button,
   useDisclosure,
+  useToast
 } from "@chakra-ui/react"
 import { useForm } from "react-hook-form";
 import { createSite } from "@/lib/db";
+import { useAuth } from "@/lib/auth";
 
 function AddSiteModal() {
+  const auth = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure()
-
+  const toast = useToast()
   const initialRef = useRef();
   const { register, handleSubmit, watch, errors } = useForm();
-  const oncreateSite = data => createSite(data);
+
+
+  const oncreateSite = ({ site, url }) => {
+    createSite({
+      owner: auth.user.uid,
+      createdAt: new Date().toISOString(),
+      site,
+      url
+    });
+    onClose();
+    toast({
+      title: "Success!",
+      description: `We've added ${site}`,
+      status: "success",
+      duration: 4000,
+      isClosable: true,
+    })
+  };
 
 
   return (

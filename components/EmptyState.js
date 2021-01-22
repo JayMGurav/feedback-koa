@@ -10,6 +10,7 @@ import AddSiteModal from './AddSiteModal'
 
 const EmptyState = () => (
   <DashboardShell>
+    <Heading>My Sites</Heading>
     <Flex
       flexDirection="column"
       backgroundColor="white"
