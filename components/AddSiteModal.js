@@ -1,4 +1,8 @@
 import React, { useRef } from "react"
+import { useForm } from "react-hook-form";
+import { createSite } from "@/lib/db";
+import { useAuth } from "@/lib/auth";
+import { mutate } from 'swr';
 import {
   Modal,
   ModalOverlay,
@@ -14,11 +18,9 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
-import { useForm } from "react-hook-form";
-import { createSite } from "@/lib/db";
-import { useAuth } from "@/lib/auth";
+import { AddIcon } from '@chakra-ui/icons'
 
-function AddSiteModal() {
+function AddSiteModal({ btnLabel }) {
   const auth = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
@@ -26,27 +28,41 @@ function AddSiteModal() {
   const { register, handleSubmit, watch, errors } = useForm();
 
 
-  const oncreateSite = ({ site, url }) => {
-    createSite({
+  const oncreateSite = ({ name, url }) => {
+    const newSite = {
       owner: auth.user.uid,
       createdAt: new Date().toISOString(),
-      site,
+      name,
       url
-    });
-    onClose();
+    }
+    createSite(newSite);
     toast({
       title: "Success!",
-      description: `We've added ${site}`,
+      description: `We've added ${name}`,
       status: "success",
       duration: 4000,
       isClosable: true,
     })
+    mutate('/api/sites', async (data) => {
+      return { sites: [...data.sites, newSite] }
+    }, false);
+    onClose();
   };
 
 
   return (
     <>
-      <Button onClick={onOpen} >Add your first site</Button>
+      <Button
+        onClick={onOpen}
+        size="sm"
+        backgroundColor="gray.900"
+        color="white"
+        _hover={{ bg: "gray.700" }}
+        _active={{
+          bg: "gray.800",
+          transform: 'scale(0.95)'
+        }}
+      ><AddIcon mr={2} />{btnLabel}</Button>
       <Modal
         initialFocusRef={initialRef}
         isOpen={isOpen}
@@ -59,7 +75,7 @@ function AddSiteModal() {
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} placeholder="My site" name="site" ref={register({ required: true })} />
+              <Input ref={initialRef} placeholder="My site" name="name" ref={register({ required: true })} />
             </FormControl>
 
             <FormControl mt={4}>
