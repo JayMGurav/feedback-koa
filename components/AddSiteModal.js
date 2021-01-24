@@ -30,7 +30,7 @@ function AddSiteModal({ btnLabel }) {
 
   const oncreateSite = ({ name, url }) => {
     const newSite = {
-      owner: auth.user.uid,
+      ownerId: auth.user.uid,
       createdAt: new Date().toISOString(),
       name,
       url

@@ -1,5 +1,6 @@
 import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from "@chakra-ui/react";
+import NextLink from 'next/link'
 
 const SiteTable = ({ sites }) => {
   return (
@@ -20,7 +21,9 @@ const SiteTable = ({ sites }) => {
             <Td>{name}</Td>
             <Td>{url}</Td>
             <Td>
-              <Link>View Feedback</Link>
+              <NextLink href="/p/[siteId]" as={`/p/${id}`} passHref>
+                <Link>View Feedback</Link>
+              </NextLink>
             </Td>
             <Td>{new Date(createdAt).toLocaleString()}</Td>
           </Tr>
