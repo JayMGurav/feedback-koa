@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/router'
-import { Box, Flex, Button, Input, FormControl, FormLabel, useToast } from '@chakra-ui/react';
+import { Box, Flex, Button, Input, FormControl, FormLabel, useToast, Heading } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
 import { createFeedback } from '@/lib/db';
-import { getALlFeedback, getALlSites } from '@/lib/db-admin';
+import { getALlFeedback, getAllSites } from '@/lib/db-admin';
 import Feedback from '@/components/Feedback';
 
 
@@ -20,7 +20,7 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  const sites = await getALlSites(),
+  const sites = await getAllSites(),
     paths = sites.map(({ id }) => ({
       params: {
         siteId: id
@@ -94,13 +94,21 @@ function SiteFeedbacks({ initialFeedbacks }) {
           Add comment
         </Button>
       </Box>
-      <Box>
-        {
-          allFeedback.map(feedback => (
-            <Feedback key={feedback.id} {...feedback} />
-          ))
-        }
-      </Box>
+      {allFeedback.length ? (
+        <Box>
+          {
+            allFeedback.map(feedback => (
+              <Feedback key={feedback.id} {...feedback} />
+            ))
+          }
+        </Box>
+      ) : (
+          <Box>
+            <Heading size="sm" as="h3" mb={0} mt={2} >
+              No feedbacks available for this site
+            </Heading>
+          </Box>
+        )}
     </Flex>
 
   )

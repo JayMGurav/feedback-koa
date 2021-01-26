@@ -8,8 +8,8 @@ import { Skeleton, Stack } from "@chakra-ui/react"
 import SiteTable from '@/components/SiteTable';
 
 export default function Dashboard() {
-  const auth = useAuth();
-  const { data, error } = useSWR('/api/sites', fetcher);
+  const { user } = useAuth();
+  const { data, error } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
 
   // if (!auth?.user) {
   if (error) console.log(error);
