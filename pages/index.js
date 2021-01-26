@@ -15,7 +15,14 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Create Next App</title>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+          if (document.cookie && document.cookie.includes('feedback_koa_auth')) {
+            window.location.href = "/dashboard"
+          }
+          `
+        }} />
+        <title>Feedback-koa</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

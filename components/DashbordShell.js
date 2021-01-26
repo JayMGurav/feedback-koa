@@ -27,8 +27,7 @@ const DashboardShell = ({ children }) => {
         backgroundColor="whiteAlpha.500"
         justifyContent="space-between"
         alignItems="center"
-        py={4}
-        px={2}
+        p={4}
       >
         <Stack
           spacing={4}
@@ -41,7 +40,7 @@ const DashboardShell = ({ children }) => {
           <Link>Feedback</Link>
         </Stack>
         <Flex alignItems="center">
-          {auth.user && <Button variant="ghost" mr={2} onClick={() => auth?.signout()}>Logout</Button>}
+          {auth.user && <Button variant="ghost" mr={1} onClick={() => auth?.signout()}>Logout</Button>}
           <Avatar size="sm" src={auth?.user?.photoUrl} />
         </Flex>
       </Flex>
