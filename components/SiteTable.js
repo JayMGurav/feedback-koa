@@ -19,10 +19,14 @@ const SiteTable = ({ sites }) => {
         {sites.map(({ name, url, createdAt, id }) => (
           <Tr key={createdAt}>
             <Td>{name}</Td>
-            <Td>{url}</Td>
+            <Td>
+              <Link href={url} isExternal>
+                {url}
+              </Link>
+            </Td>
             <Td>
               <NextLink href="/p/[siteId]" as={`/p/${id}`} passHref>
-                <Link>View Feedback</Link>
+                <Link color="blue.500">View Feedback</Link>
               </NextLink>
             </Td>
             <Td>{new Date(createdAt).toLocaleString()}</Td>

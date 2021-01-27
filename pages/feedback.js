@@ -6,20 +6,19 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher';
 import { Skeleton, Stack, Box } from "@chakra-ui/react"
 
-import SiteTable from '@/components/SiteTable';
+import FeedbackTable from '@/components/FeedbackTable';
 import TableHeader from '@/components/TableHeader';
 
-export default function Dashboard() {
+export default function MyFeedback() {
   const { user } = useAuth();
-  const { data, error } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
+  const { data, error } = useSWR(user ? ['/api/feedback', user.token] : null, fetcher);
 
   // if (!auth?.user) {
   if (error) console.log(error);
-
   if (!data) {
     return (
       <DashboardShell>
-        <TableHeader label="Sites" siteModal />
+        <TableHeader label="Feedback" />
         <Box
           mt={4}
           p={4}
@@ -41,16 +40,16 @@ export default function Dashboard() {
 
   return (
     <DashboardShell>
-      <TableHeader label="Sites" siteModal />
+      <TableHeader label="Feedback" />
       <Box
-        mt={8}
+        mt={4}
         p={4}
         overflowX="auto"
         overflowY="hidden"
         bg="white"
         borderRadius={8}
       >
-        {data.sites.length ? <SiteTable sites={data.sites} /> : <EmptyState />}
+        {data.feedbacks.length ? <FeedbackTable allFeedback={data.feedbacks} /> : <EmptyState />}
       </Box>
     </DashboardShell>
   )
