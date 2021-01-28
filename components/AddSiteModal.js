@@ -64,7 +64,10 @@ function AddSiteModal({ btnLabel }) {
           bg: "gray.800",
           transform: 'scale(0.95)'
         }}
-      ><AddIcon mr={2} />{btnLabel}</Button>
+      >
+        <AddIcon mr={2} />
+        {btnLabel}
+      </Button>
       <Modal
         initialFocusRef={initialRef}
         isOpen={isOpen}

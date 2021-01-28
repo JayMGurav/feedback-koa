@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
-import { Heading, Flex, Button } from "@chakra-ui/react"
+import { Heading, Flex, Button, Stack } from "@chakra-ui/react"
 import { useRouter } from 'next/router'
+import Github from '@/components/icons/Github';
+import Google from '@/components/icons/Google';
 
 export default function Home() {
   const auth = useAuth();
@@ -38,7 +40,39 @@ export default function Home() {
           </Heading>
         {auth?.user ?
           (<Button onClick={handleClick}>View dashboard</Button>) :
-          (<Button mt={4} size="sm" onClick={() => auth.signinWithGithub()}>Sign in</Button>)}
+          (
+            <Stack>
+              <Button
+                leftIcon={<Github />}
+                size="sm"
+                backgroundColor="gray.900"
+                color="white"
+                _hover={{ bg: "gray.700" }}
+                _active={{
+                  bg: "gray.800",
+                  transform: 'scale(0.95)'
+                }}
+                onClick={() => auth.signinWithGithub()}
+              >
+                Sign in with Github
+            </Button>
+              <Button
+                leftIcon={<Google />}
+                size="sm"
+                backgroundColor="white"
+                color="gray.900"
+                variant="outline"
+                _hover={{ bg: "gray.100" }}
+                _active={{
+                  bg: "gray.100",
+                  transform: 'scale(0.95)'
+                }}
+                onClick={() => auth.signinWithGoogle()}
+              >
+                Sign in with Google
+            </Button>
+            </Stack>
+          )}
       </Flex>
     </div>
   )

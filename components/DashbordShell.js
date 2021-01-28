@@ -7,8 +7,9 @@ import {
   Button,
   Box,
 } from '@chakra-ui/react'
-import { useAuth } from '@/lib/auth'
+import NextLink from 'next/link';
 
+import { useAuth } from '@/lib/auth'
 
 const DashboardShell = ({ children }) => {
   const auth = useAuth()
@@ -30,9 +31,9 @@ const DashboardShell = ({ children }) => {
           justifyContent="flex-start"
           alignItems="stretch"
         >
-          <Link boxSize={3} display="block">🐨</Link>
-          <Link>Sites</Link>
-          <Link>Feedback</Link>
+          <NextLink boxSize={3} display="block" href="/" passHref>🐨</NextLink>
+          <NextLink href="/dashboard" passHref><Link>Sites</Link></NextLink>
+          <NextLink href="/feedback" passHref><Link>Feedback</Link></NextLink>
         </Stack>
         <Flex alignItems="center">
           {auth.user && <Button variant="ghost" mr={1} onClick={() => auth?.signout()}>Logout</Button>}
