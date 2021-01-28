@@ -31,13 +31,14 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false
+    fallback: true
   };
 }
 
 
 function SiteFeedbacks({ initialFeedbacks }) {
-  const { siteId } = useRouter().query;
+  const router = useRouter();
+  const { siteId } = router.query;
   const auth = useAuth();
   const inputElemRef = useRef(null);
   const [allFeedback, setAllFeedback] = useState(initialFeedbacks);
@@ -59,6 +60,7 @@ function SiteFeedbacks({ initialFeedbacks }) {
     try {
       createFeedback(newFeedback);
       setAllFeedback([...allFeedback, newFeedback]);
+      inputElemRef.current.value = '';
     } catch (error) {
       console.log(error.message);
     }
@@ -91,6 +93,7 @@ function SiteFeedbacks({ initialFeedbacks }) {
         <Button
           mt={2}
           type="submit"
+          isDisabled={router.isFallback}
         >
           Add comment
         </Button>
