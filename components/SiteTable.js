@@ -18,14 +18,18 @@ const SiteTable = ({ sites }) => {
       <Tbody>
         {sites.map(({ name, url, createdAt, id }) => (
           <Tr key={createdAt}>
-            <Td>{name}</Td>
+            <Td>
+              <NextLink href="/site/[siteId]" as={`/site/${id}`} passHref>
+                <Link color="blue.500">{name}</Link>
+              </NextLink>
+            </Td>
             <Td>
               <Link href={url} isExternal>
                 {url}
               </Link>
             </Td>
             <Td>
-              <NextLink href="/p/[siteId]" as={`/p/${id}`} passHref>
+              <NextLink href="/feedback/[siteId]" as={`/feedback/${id}`} passHref>
                 <Link color="blue.500">View Feedback</Link>
               </NextLink>
             </Td>

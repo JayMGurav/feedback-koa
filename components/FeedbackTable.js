@@ -1,6 +1,6 @@
 import React from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, Code, Switch } from "@chakra-ui/react";
-import RemoveButton from './RemoveButton'
+import { Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import FeedbackRow from "./FeedbackRow";
 
 const FeedbackTable = ({ allFeedback }) => {
   return (
@@ -18,17 +18,7 @@ const FeedbackTable = ({ allFeedback }) => {
       </Thead>
       <Tbody>
         {allFeedback.map(feedback => (
-          <Tr key={feedback.id}>
-            <Td>{feedback.author}</Td>
-            <Td>{feedback.text}</Td>
-            <Td>
-              <Code>{'/'}</Code>
-            </Td>
-            <Td><Switch size="md" variant="green" defaultChecked={feedback.status === 'active'} /></Td>
-            <Td>
-              <RemoveButton feedbackId={feedback.id} />
-            </Td>
-          </Tr>
+          <FeedbackRow {...feedback} key={feedback.id} />
         ))}
       </Tbody>
     </Table>

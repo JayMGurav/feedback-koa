@@ -8,10 +8,15 @@ import { Skeleton, Stack, Box } from "@chakra-ui/react"
 
 import FeedbackTable from '@/components/FeedbackTable';
 import TableHeader from '@/components/TableHeader';
+import { useRouter } from 'next/router';
 
-export default function MyFeedback() {
+
+
+// view all the feedbacks give for the site
+export default function SiteFeedback() {
   const { user } = useAuth();
-  const { data, error } = useSWR(user ? ['/api/feedback', user.token] : null, fetcher);
+  const { siteId } = useRouter().query
+  const { data, error } = useSWR(user ? [`/api/feedback/${siteId}`, user.token] : null, fetcher);
 
   // if (!auth?.user) {
   if (error) console.log(error);
@@ -40,7 +45,7 @@ export default function MyFeedback() {
 
   return (
     <DashboardShell>
-      <TableHeader label="Feedback" />
+      <TableHeader label="All Feedback" />
       <Box
         mt={4}
         p={4}
@@ -49,6 +54,7 @@ export default function MyFeedback() {
         bg="white"
         borderRadius={8}
       >
+        {/* Empty state is there are no feedback for this site */}
         {data.feedback.length ? <FeedbackTable allFeedback={data.feedback} /> : <EmptyState />}
       </Box>
     </DashboardShell>

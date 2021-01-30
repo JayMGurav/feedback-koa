@@ -4,13 +4,13 @@ import { Box, Flex, Button, Input, FormControl, FormLabel, useToast, Heading } f
 
 import { useAuth } from '@/lib/auth';
 import { createFeedback } from '@/lib/db';
-import { getALlFeedback, getAllSites } from '@/lib/db-admin';
+import { getAllFeedback, getAllSites } from '@/lib/db-admin';
 import Feedback from '@/components/Feedback';
 
 
 export async function getStaticProps(context) {
   const siteId = context.params.siteId;
-  const allFeedbackForSite = await getALlFeedback(siteId);
+  const allFeedbackForSite = await getAllFeedback(siteId);
 
   return {
     props: {
@@ -36,7 +36,7 @@ export async function getStaticPaths() {
 }
 
 
-function SiteFeedbacks({ initialFeedbacks }) {
+function EmbedSiteFeedbacks({ initialFeedbacks }) {
   const router = useRouter();
   const { siteId } = router.query;
   const auth = useAuth();
@@ -82,7 +82,7 @@ function SiteFeedbacks({ initialFeedbacks }) {
     <Flex
       flexDir="column"
       w="full"
-      maxW="700px"
+      // maxW="700px"
       m="0 auto"
     >
       <Box as="form" my={4} onSubmit={addCommentHandler}>
@@ -120,4 +120,4 @@ function SiteFeedbacks({ initialFeedbacks }) {
 
 
 
-export default SiteFeedbacks;
+export default EmbedSiteFeedbacks;

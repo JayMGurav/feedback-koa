@@ -11,7 +11,7 @@ export default function Home() {
 
   const handleClick = (e) => {
     e.preventDefault();
-    router.push('/dashboard');
+    router.push('/sites');
   }
 
   return (
@@ -20,7 +20,7 @@ export default function Home() {
         <script dangerouslySetInnerHTML={{
           __html: `
           if (document.cookie && document.cookie.includes('feedback_koa_auth')) {
-            window.location.href = "/dashboard"
+            window.location.href = "/sites"
           }
           `
         }} />

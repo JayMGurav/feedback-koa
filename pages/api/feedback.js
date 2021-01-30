@@ -4,9 +4,9 @@ import { auth } from "@/lib/firebase-admin";
 export default async function (req, res) {
   try {
     const { uid } = await auth.verifyIdToken(req.headers.token)
-    const feedbacks = await getUserFeedback(uid);
+    const feedback = await getUserFeedback(uid);
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({ feedbacks });
+    res.status(200).json({ feedback });
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
