@@ -10,7 +10,7 @@ const FeedbackRow = ({ id, author, route, text, status }) => {
   const [isToggled, setIsToggled] = useState(status === 'active');
 
   const toggleFeedback = async () => {
-    // console.log(!isToggled);
+    
     await updateFeedback(id, { status: !isToggled ? 'active' : 'pending' });
     setIsToggled(!isToggled);
     mutate(['/api/feedback', auth.user.token]);

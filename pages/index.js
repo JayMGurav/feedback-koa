@@ -1,19 +1,33 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
-import { Heading, Flex, Button, Stack } from "@chakra-ui/react"
-import { useRouter } from 'next/router'
+import { Heading, Flex, Button, Stack, Box, Text } from "@chakra-ui/react"
 import Github from '@/components/icons/Github';
 import Google from '@/components/icons/Google';
+import { getAllFeedback, getSiteDetails } from '@/lib/db-admin';
+import LogginButtons from '@/components/LogginButtons';
+import FeedbackLink from '@/components/FeedbackLink';
+import Feedback from '@/components/Feedback';
 
-export default function Home() {
-  const auth = useAuth();
-  const router = useRouter()
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    router.push('/sites');
+const SITE_ID = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
+
+
+export async function getStaticProps(context) {
+  const feedback = await getAllFeedback(SITE_ID);
+  const site = await getSiteDetails(SITE_ID);
+
+  return {
+    props: {
+      allFeedback: feedback,
+      site
+    },
+    revalidate: 1
   }
+}
 
+
+export default function Home({ allFeedback, site }) {
+  const auth = useAuth();
   return (
     <div>
       <Head>
@@ -24,55 +38,77 @@ export default function Home() {
           }
           `
         }} />
-        <title>Feedback-koa</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>koafeedback</title>
       </Head>
-
-      <Flex
-        as="main"
-        direction="column"
-        justify="center"
-        alignItems="center"
-        h="100vh"
-      >
-        <Heading as="h1" isTruncated>
-          Feedback koa🐨
+      <Flex w="full" direction={['column', 'row']} h="100vh">
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          py={8}
+          px={2}
+          bg="gray.100"
+          flex="2"
+          flexShrink="4"
+        >
+          <Box
+            as="main"
+            maxW="700px"
+            py={4}
+            px={2}
+          >
+            <Heading as="h1" mb={2} isTruncated>
+              🐨
           </Heading>
-        {auth?.user ?
-          (<Button onClick={handleClick}>View dashboard</Button>) :
-          (
-            <Stack>
-              <Button
-                leftIcon={<Github />}
-                size="sm"
+
+            <Text mb={4}>
+              <Text as="span" fontWeight="bold" display="inline">
+                Feedback Koa
+            </Text>
+              {" "}is the easiest way to add comments, give reviews and provide feedback to your static site. Try it out by leaving a comment below. After the comment is approved, it will display below.
+          </Text>
+            {auth.user ?
+              (<Button
+                as="a"
+                href="/sites"
                 backgroundColor="gray.900"
                 color="white"
-                _hover={{ bg: "gray.700" }}
+                fontWeight="medium"
+                mt={4}
+                maxW="200px"
+                _hover={{ bg: 'gray.700' }}
                 _active={{
-                  bg: "gray.800",
+                  bg: 'gray.800',
                   transform: 'scale(0.95)'
                 }}
-                onClick={() => auth.signinWithGithub()}
               >
-                Sign in with Github
-            </Button>
-              <Button
-                leftIcon={<Google />}
-                size="sm"
-                backgroundColor="white"
-                color="gray.900"
-                variant="outline"
-                _hover={{ bg: "gray.100" }}
-                _active={{
-                  bg: "gray.100",
-                  transform: 'scale(0.95)'
-                }}
-                onClick={() => auth.signinWithGoogle()}
-              >
-                Sign in with Google
-            </Button>
-            </Stack>
-          )}
+                View Dashboard
+              </Button>) :
+              (
+                <LogginButtons />
+              )}
+          </Box>
+        </Flex>
+        <Flex
+          py={4}
+          px={4}
+          bg="gray.50"
+          flex="1"
+          flexShrink="1"
+          direction="column"
+        >
+          <FeedbackLink siteId={SITE_ID} />
+          <Box overflowY="auto" minW="300px">
+            {allFeedback.map(feedback => (
+              <Feedback
+                key={feedback.id}
+                author={feedback.author}
+                createdAt={feedback.createdAt}
+                text={feedback.text}
+                provider={feedback.provider}
+              />
+            ))}
+          </Box>
+        </Flex>
       </Flex>
     </div>
   )
