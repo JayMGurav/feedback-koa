@@ -5,6 +5,7 @@
 ### 📝 ToDo 
 
 - [x] Sign in with Github and Google.
+- [ ] Display breadcrumbs.
 - [ ] supporting for rating.
 - [ ] support anonymous reviews(issue, tip, other).
 - [ ] support for anonymous polls.
