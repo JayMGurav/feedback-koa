@@ -12,7 +12,7 @@
 - [ ] enhance account page to show number of sites, comments, reviews, polls.
 - [ ] setting options for comments, polls and reviews.
 - [ ] Sign in with mail, and add authentication pages.
-- [ ] documentation to use, about, privacy, terms, pages
+- [ ] documentation to use, about, privacy, terms pages
 
 ### 🏗 Built using 
 
