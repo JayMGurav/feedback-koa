@@ -22,7 +22,7 @@ const LogginButtons = () => {
           bg: "gray.800",
           transform: 'scale(0.95)'
         }}
-        onClick={() => auth.signinWithGithub()}
+        onClick={() => auth.signinWithGithub('/')}
       >
         Sign in with Github
       </Button>
@@ -39,7 +39,7 @@ const LogginButtons = () => {
           bg: "gray.100",
           transform: 'scale(0.95)'
         }}
-        onClick={() => auth.signinWithGoogle()}
+        onClick={() => auth.signinWithGoogle('/')}
       >
         Sign in with Google
       </Button>

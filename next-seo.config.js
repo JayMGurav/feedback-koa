@@ -5,16 +5,16 @@ const description = 'koafeedback is the easiest way to add comments, provide fee
 const SEO = {
   title,
   description,
-  canonical: 'https://koafeedback.vercel.app/',
+  canonical: 'https://feedbackkoa.vercel.app/',
   openGraph: {
     type: 'website',
     locale: 'en_IE',
-    url: 'https://koafeedback.vercel.app/',
+    url: 'https://feedbackkoa.vercel.app/',
     title,
     description,
     images: [
       {
-        url: 'https://koafeedback.vercel.app/og.png',
+        url: 'https://feedbackkoa.vercel.app/og.png',
         alt: title,
         width: 500,
         height: 500

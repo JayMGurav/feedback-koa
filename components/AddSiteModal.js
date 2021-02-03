@@ -20,12 +20,12 @@ import {
 } from "@chakra-ui/react"
 import { AddIcon } from '@chakra-ui/icons'
 
-function AddSiteModal({ btnLabel }) {
+function AddSiteModal({ label = null }) {
   const auth = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
   const initialRef = useRef();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit } = useForm();
 
 
   const oncreateSite = ({ name, url }) => {
@@ -33,12 +33,17 @@ function AddSiteModal({ btnLabel }) {
       ownerId: auth.user.uid,
       createdAt: new Date().toISOString(),
       name,
-      url
+      url,
+      settings: {
+        icons: true,
+        timestamp: true,
+        ratings: false
+      }
     }
     const { id } = createSite(newSite);
     toast({
       title: "Success!",
-      description: `We've added ${name}`,
+      description: "We've added your site",
       status: "success",
       duration: 4000,
       isClosable: true,
@@ -65,8 +70,8 @@ function AddSiteModal({ btnLabel }) {
           transform: 'scale(0.95)'
         }}
       >
-        <AddIcon mr={2} />
-        {btnLabel}
+        <AddIcon mr={label ? 2 : 0} />
+        {label}
       </Button>
       <Modal
         initialFocusRef={initialRef}

@@ -2,24 +2,23 @@ import {
   Flex,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   Heading,
   Spacer,
 } from '@chakra-ui/react'
-import AddSiteModal from './AddSiteModal'
+import NextLink from 'next/link'
 
-export default function TableHeader({ label, siteModal }) {
+export default function TableHeader({ label, url, action }) {
   return (
     <>
       <Breadcrumb mt={0}>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink color="gray.700" fontSize="sm" >{label}</BreadcrumbLink>
+          <NextLink href={url} passHref color="gray.700" fontSize="sm" >{label}</NextLink>
         </BreadcrumbItem>
       </Breadcrumb>
       <Flex alignItems="center">
-        <Heading>My {label}</Heading>
+        <Heading>{label}</Heading>
         <Spacer />
-        {siteModal && <AddSiteModal btnLabel="Add site" />}
+        {action && action}
       </Flex>
     </>
   )

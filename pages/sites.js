@@ -8,8 +8,10 @@ import { Skeleton, Stack, Box } from "@chakra-ui/react"
 
 import SiteTable from '@/components/SiteTable';
 import TableHeader from '@/components/TableHeader';
+import AddSiteModal from '@/components/AddSiteModal';
+import Page from '@/components/Page';
 
-export default function Dashboard() {
+function Dashboard() {
   const { user } = useAuth();
   const { data, error } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
 
@@ -19,7 +21,7 @@ export default function Dashboard() {
   if (!data) {
     return (
       <DashboardShell>
-        <TableHeader label="Sites" siteModal />
+        <TableHeader label="Sites" url="/sites" action={<AddSiteModal label="Add your site" />} />
         <Box
           mt={4}
           p={4}
@@ -41,7 +43,8 @@ export default function Dashboard() {
 
   return (
     <DashboardShell>
-      <TableHeader label="Sites" siteModal />
+      <TableHeader label="Sites" url="/sites" action={<AddSiteModal label="Add your site" />}
+      />
       <Box
         mt={8}
         p={4}
@@ -50,8 +53,21 @@ export default function Dashboard() {
         bg="white"
         borderRadius={8}
       >
-        {data.sites.length ? <SiteTable sites={data.sites} /> : <EmptyState />}
+        {data.sites.length ? <SiteTable sites={data.sites} uid={user.uid} /> : <EmptyState
+          title="You haven't added any sites."
+          content="Welcome 👋 Let's get started."
+          action={<AddSiteModal label="Add your first site" />}
+        />}
       </Box>
     </DashboardShell>
   )
 }
+
+
+const DashboardPage = () => (
+  <Page name="Dashboard" path="/sites">
+    <Dashboard />
+  </Page>
+);
+
+export default DashboardPage;

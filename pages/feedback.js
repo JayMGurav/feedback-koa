@@ -18,7 +18,7 @@ export default function MyFeedback() {
   if (!data) {
     return (
       <DashboardShell>
-        <TableHeader label="Feedback" />
+        <TableHeader label="Feedback" url="/feedback" />
         <Box
           mt={4}
           p={4}
@@ -40,7 +40,7 @@ export default function MyFeedback() {
 
   return (
     <DashboardShell>
-      <TableHeader label="Feedback" />
+      <TableHeader label="Feedback" url="/feedback" />
       <Box
         mt={4}
         p={4}
@@ -49,7 +49,12 @@ export default function MyFeedback() {
         bg="white"
         borderRadius={8}
       >
-        {data.feedback.length ? <FeedbackTable allFeedback={data.feedback} /> : <EmptyState />}
+        {data.feedback?.length ? <FeedbackTable allFeedback={data.feedback} /> : <EmptyState
+          title="There isn't any feedback."
+          content="Share your sites!🚀"
+          action={null}
+        // label=""
+        />}
       </Box>
     </DashboardShell>
   )

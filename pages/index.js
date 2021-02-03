@@ -38,9 +38,9 @@ export default function Home({ allFeedback, site }) {
           }
           `
         }} />
-        <title>koafeedback</title>
+        <title>Feedback Koa</title>
       </Head>
-      <Flex w="full" direction={['column', 'row']} h="100vh">
+      <Flex w="full" direction={['column', 'row']} flexWrap="wrap" h="100vh">
         <Flex
           justifyContent="center"
           alignItems="center"
@@ -64,7 +64,7 @@ export default function Home({ allFeedback, site }) {
               <Text as="span" fontWeight="bold" display="inline">
                 Feedback Koa
             </Text>
-              {" "}is the easiest way to add comments, give reviews and provide feedback to your static site. Try it out by leaving a comment below. After the comment is approved, it will display below.
+              {" "}is the easiest way to add comments, give reviews and provide pools to your static site. Try it out by leaving a comment below. After the comment is approved, it will display below.
           </Text>
             {auth.user ?
               (<Button
@@ -95,21 +95,29 @@ export default function Home({ allFeedback, site }) {
           flex="1"
           flexShrink="1"
           direction="column"
+          minW="300px"
         >
           <FeedbackLink siteId={SITE_ID} />
-          <Box overflowY="auto" minW="300px">
-            {allFeedback.map(feedback => (
-              <Feedback
-                key={feedback.id}
-                author={feedback.author}
-                createdAt={feedback.createdAt}
-                text={feedback.text}
-                provider={feedback.provider}
-              />
-            ))}
-          </Box>
+          {allFeedback.length ? (
+            <Box overflowY="auto" minW="300px">
+              {allFeedback.map(feedback => (
+                <Feedback
+                  key={feedback.id}
+                  settings={{
+                    icons: true,
+                    timestamp: true
+                  }}
+                  isLast={index === allFeedback.length - 1}
+                  {...feedback}
+                />
+              ))}
+            </Box>
+          ) : (
+            <Text mx="auto" color="gray.400" w="80%" px={2} textAlign="center">No comments yet!!, Go ahead and leave a comment above👆</Text>
+          )}
+
         </Flex>
       </Flex>
-    </div>
+    </div >
   )
 }

@@ -2,7 +2,10 @@ import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Link } from "@chakra-ui/react";
 import NextLink from 'next/link'
 
-const SiteTable = ({ sites }) => {
+import DeleteSiteButton from './DeleteSiteButton';
+import EditSiteModal from './EditSiteModal';
+
+const SiteTable = ({ sites, uid }) => {
   return (
     <Table variant="simple" >
       <Thead
@@ -13,10 +16,11 @@ const SiteTable = ({ sites }) => {
           <Th>Site Link</Th>
           <Th>Feedback Link</Th>
           <Th>Date Added</Th>
+          <Th>{''}</Th>
         </Tr>
       </Thead>
       <Tbody>
-        {sites.map(({ name, url, createdAt, id }) => (
+        {sites.map(({ name, url, createdAt, id, ownerId, settings }) => (
           <Tr key={createdAt}>
             <Td>
               <NextLink href="/site/[siteId]" as={`/site/${id}`} passHref>
@@ -24,16 +28,24 @@ const SiteTable = ({ sites }) => {
               </NextLink>
             </Td>
             <Td>
-              <Link href={url} isExternal>
+              <Link href={url} isExternal rel="noopener noreferrer">
                 {url}
               </Link>
             </Td>
             <Td>
-              <NextLink href="/feedback/[siteId]" as={`/feedback/${id}`} passHref>
+              <NextLink href="/site/[siteId]" as={`/site/${id}`} passHref>
                 <Link color="blue.500">View Feedback</Link>
               </NextLink>
             </Td>
             <Td>{new Date(createdAt).toLocaleString()}</Td>
+            <Td display="inline-flex">
+              {uid == ownerId && (
+                <>
+                  <EditSiteModal settings={settings} siteId={id} />
+                  <DeleteSiteButton siteId={id} />
+                </>
+              )}
+            </Td>
           </Tr>
         ))}
       </Tbody>
