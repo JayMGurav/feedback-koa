@@ -5,7 +5,7 @@
 ### 📝 ToDo 
 
 - [x] Sign in with Github and Google.
-- [] supporting for rating.
+- [ ] supporting for rating.
 - [ ] support anonymous reviews(issue, tip, other).
 - [ ] support for anonymous polls.
 - [ ] a widget component for reviews and real-time polls.
