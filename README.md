@@ -1,5 +1,4 @@
-# 🐨
-## Feedback Koa
+# 🐨 Feedback Koa
 
 🐨 **Feedback Koa** is the easiest way to add comments, user feedback, reviews and conduct polls to your website.
 
@@ -13,7 +12,7 @@
 - [ ] enhance account page to show number of sites, comments, reviews, polls.
 - [ ] setting options for comments, polls and reviews.
 - [ ] Sign in with mail, and add authentication pages.
-- [ ] documentation to use, about, privacy, terms, pages
+- [ ] documentation to use, about, privacy, terms pages
 
 ### 🏗 Built using 
 
