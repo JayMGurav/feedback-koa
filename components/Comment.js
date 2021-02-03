@@ -3,8 +3,7 @@ import { Box, Text, Divider, Heading, Flex } from '@chakra-ui/react';
 import Github from './icons/Github';
 import Google from './icons/Google';
 
-export default function Feedback({ author, text, createdAt, provider, isLast, settings }) {
-  console.log("hello")
+export default function Comment({ author, text, createdAt, provider, isLast, settings }) {
   return (
     <Box borderRadius={4} maxWidth="700px" w="full">
       <Flex align="center">
@@ -12,8 +11,10 @@ export default function Feedback({ author, text, createdAt, provider, isLast, se
           size="sm"
           as="h3"
           mb={0}
-          color={authorColor[colorMode]}
+          color="black"
           fontWeight="medium"
+          mr={2}
+          my={1}
         >
           {author}
         </Heading>
@@ -23,7 +24,7 @@ export default function Feedback({ author, text, createdAt, provider, isLast, se
       </Flex>
       {settings?.timestamp && (
         <Text color="gray.500" fontSize="xs" mb={4} >
-          {new Date(createdAt).toLocaleString()}
+          <time>{new Date(createdAt).toLocaleString()}</time>
         </Text>
       )}
       <Text color="gray.800" mb={4}>{text}</Text>

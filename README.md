@@ -1,12 +1,11 @@
-# 🐨
-## Feedback Koa
-
+# 🐨Feedback Koa
 🐨 **Feedback Koa** is the easiest way to add comments, user feedback, reviews and conduct polls to your website.
 
 ### 📝 ToDo 
 
 - [x] Sign in with Github and Google.
-- [ ] support anonymous reviews(issue, tip, other).
+- [x] change feedback's to comment's.
+- [ ] support anonymous reviews(issue, tips, other).
 - [ ] support for anonymous polls.
 - [ ] a widget component for reviews and real-time polls.
 - [ ] support to embeed components in sites.

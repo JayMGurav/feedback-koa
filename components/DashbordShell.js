@@ -38,8 +38,8 @@ const DashboardShell = ({ children }) => {
           <NextLink href="/sites" passHref>
             <Link>Sites</Link>
           </NextLink>
-          <NextLink href="/feedback" passHref>
-            <Link>Feedbacks</Link>
+          <NextLink href="/comments" passHref>
+            <Link>Comments</Link>
           </NextLink>
         </Stack>
         <Flex alignItems="center">

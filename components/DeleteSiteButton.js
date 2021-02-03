@@ -48,7 +48,7 @@ function DeleteSiteButton({ siteId }) {
     <>
 
       <IconButton
-        aria-label="Delete feedback"
+        aria-label="Delete site"
         icon={<DeleteIcon />}
         variant="ghost"
         onClick={() => setIsOpen(true)}
@@ -68,7 +68,7 @@ function DeleteSiteButton({ siteId }) {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? This will also delete all feedback left on this site aswell.
+              Are you sure? This will also delete all data left on this site aswell.
               You can't undo this action afterwards.
             </AlertDialogBody>
 

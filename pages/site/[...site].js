@@ -3,14 +3,14 @@ import { useRouter } from 'next/router'
 import { Box, Flex, Text, Button, FormControl, useToast, Textarea } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
-import { createFeedback } from '@/lib/db';
-import Feedback from '@/components/Feedback';
+import { createComment } from '@/lib/db';
+import Comment from '@/components/Comment';
 import fetcher from '@/utils/fetcher';
 import DashboardShell from '@/components/DashbordShell';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import LogginButtons from '@/components/LogginButtons';
 
-const FeedBackPage = () => {
+const CommentPage = () => {
   const { user, loading } = useAuth();
   const inputElem = useRef(null);
   const router = useRouter();
@@ -18,19 +18,18 @@ const FeedBackPage = () => {
   const siteId = slug ? slug[0] : null;
   const route = slug ? slug[1] : null;
 
-  const feedbackApi = route
-    ? `/api/feedback/${siteId}/${route}`
-    : `/api/feedback/${siteId}`;
+  const commentApi = route
+    ? `/api/comment/${siteId}/${route}`
+    : `/api/comment/${siteId}`;
   // const { data: { site } } = useSWR(`/api/site/${siteId}`, fetcher);
-  const { data } = useSWR(feedbackApi, fetcher);
-  const { feedback, site } = { feedback: data?.feedback, site: data?.site };
+  const { data } = useSWR(commentApi, fetcher);
+  const { comments, site } = { comments: data?.comments, site: data?.site };
   // return (<Box>   <h1>Slug: {slug.join('/')}</h1> this  {user?.email}</Box>)
-
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const newFeedback = {
+    const newComment = {
       siteId,
       siteAuthorId: site.ownerId,
       route: route || '/',
@@ -43,11 +42,11 @@ const FeedBackPage = () => {
     };
 
     inputElem.current.value = '';
-    createFeedback(newFeedback);
+    createComment(newComment);
     mutate(
-      feedbackApi,
+      commentApi,
       async (data) => ({
-        feedback: [newFeedback, ...data.feedback]
+        comments: [newComment, ...data.comments]
       }),
       false
     );
@@ -72,17 +71,17 @@ const FeedBackPage = () => {
               isDisabled={!user}
               h="100px"
             />
-            {!loading && <LoginOrLeaveFeedback user={user} feedback={feedback} site={site} />}
+            {!loading && <LoginOrLeaveComment user={user} comments={comments} site={site} />}
           </FormControl>
         </Box>
         {
-          feedback &&
-          feedback.map((feedback, index) => (
-            <Feedback
-              key={feedback.id}
+          comments &&
+          comments.map((comment, index) => (
+            <Comment
+              key={comment.id}
               settings={site?.settings}
-              isLast={index === allFeedback.length - 1}
-              {...feedback}
+              isLast={index === comments.length - 1}
+              {...comment}
             />
           ))
         }
@@ -93,11 +92,12 @@ const FeedBackPage = () => {
 }
 
 
-function LoginOrLeaveFeedback({ user, feedback = null, site = null }) {
+function LoginOrLeaveComment({ user, comments, site }) {
+
   return user ? (
     <Button
       type="submit"
-      isDisabled={!feedback || !site}
+      isDisabled={!comments || !site}
       backgroundColor="gray.900"
       color="white"
       fontWeight="medium"
@@ -108,7 +108,7 @@ function LoginOrLeaveFeedback({ user, feedback = null, site = null }) {
         transform: 'scale(0.95)'
       }}
     >
-      Leave Feedback
+      Leave Comment
     </Button>
   ) : (
     <LogginButtons />
@@ -119,132 +119,4 @@ function LoginOrLeaveFeedback({ user, feedback = null, site = null }) {
 
 
 
-export default FeedBackPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// /////-------------------------------------------------------------------------------------------
-// export async function getStaticProps(context) {
-//   const siteId = context.params.siteId;
-//   const allFeedbackForSite = await getAllFeedback(siteId);
-
-//   return {
-//     props: {
-//       initialFeedbacks: allFeedbackForSite,
-//     },
-//     revalidate: 1
-//   }
-// }
-
-// export async function getStaticPaths() {
-//   const sites = await getAllSites(),
-//     paths = sites.map(({ id }) => ({
-//       params: {
-//         siteId: id
-//       }
-//     }));
-
-
-//   return {
-//     paths,
-//     fallback: true
-//   };
-// }
-
-
-// function SiteFeedbacks({ initialFeedbacks }) {
-//   const router = useRouter();
-//   const { siteId } = router.query;
-//   const auth = useAuth();
-//   const inputElememRef = useRef(null);
-//   const [allFeedback, setAllFeedback] = useState(initialFeedbacks);
-//   const toast = useToast();
-
-//   const addCommentHandler = (e) => {
-//     e.preventDefault();
-//     const newFeedback = {
-//       author: auth.user.name,
-//       authorId: auth.user.uid,
-//       siteId,
-//       text: inputElememRef.current.value,
-//       status: "pending",
-//       provider: auth.user.provider,
-//       createdAt: new Date().toISOString(),
-//       rating: 5
-//     }
-//     // console.log({ newFeedback });
-//     try {
-//       createFeedback(newFeedback);
-//       setAllFeedback([...allFeedback, newFeedback]);
-//       inputElememRef.current.value = '';
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-
-//     toast({
-//       title: "Success!",
-//       description: "Added new feedback",
-//       status: "success",
-//       duration: 4000,
-//       isClosable: true,
-//     })
-//     // mutate('/api/sites', async (data) => {
-//     //   return { sites: [...data.sites, newSite] }
-//     // }, false);
-//   }
-
-
-//   return (
-//     <Flex
-//       flexDir="column"
-//       w="full"
-//       maxW="700px"
-//       m="0 auto"
-//     >
-//       <Box as="form" my={4} onSubmit={addCommentHandler}>
-//         <FormControl id="comment">
-//           <FormLabel htmlFor="comment">comment</FormLabel>
-//           <Input ref={inputElememRef} type="text" id="comment" placeholder="Enter your comment here" />
-//         </FormControl>
-//         <Button
-//           mt={2}
-//           type="submit"
-//           isDisabled={router.isFallback}
-//         >
-//           Add comment
-//         </Button>
-//       </Box>
-//       {allFeedback.length ? (
-//         <Box>
-//           {
-//             allFeedback.map(feedback => (
-//               <Feedback key={feedback.id} {...feedback} />
-//             ))
-//           }
-//         </Box>
-//       ) : (
-//         <Box>
-//           <Heading size="sm" as="h3" mb={0} mt={2} >
-//             No feedbacks available for this site
-//             </Heading>
-//         </Box>
-//       )}
-//     </Flex>
-
-//   )
-// }
-
-
-
-// export default SiteFeedbacks;
+export default CommentPage;

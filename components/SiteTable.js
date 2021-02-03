@@ -14,7 +14,7 @@ const SiteTable = ({ sites, uid }) => {
         <Tr>
           <Th>Name</Th>
           <Th>Site Link</Th>
-          <Th>Feedback Link</Th>
+          <Th>Comment Link</Th>
           <Th>Date Added</Th>
           <Th>{''}</Th>
         </Tr>
@@ -34,7 +34,7 @@ const SiteTable = ({ sites, uid }) => {
             </Td>
             <Td>
               <NextLink href="/site/[siteId]" as={`/site/${id}`} passHref>
-                <Link color="blue.500">View Feedback</Link>
+                <Link color="blue.500">View Comments</Link>
               </NextLink>
             </Td>
             <Td>{new Date(createdAt).toLocaleString()}</Td>

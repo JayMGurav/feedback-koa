@@ -10,13 +10,13 @@ import {
   Button,
   useToast
 } from "@chakra-ui/react"
-import { deleteFeedback } from '@/lib/db'
+import { deleteComment } from '@/lib/db'
 import { DeleteIcon } from '@chakra-ui/icons';
 import { mutate } from 'swr';
 import { useAuth } from '@/lib/auth';
 
 
-function DeleteFeedbackButton({ feedbackId }) {
+function DeleteCommentButton({ commentId }) {
   const auth = useAuth();
   const [isOpen, setIsOpen] = useState(false)
   const toast = useToast()
@@ -24,18 +24,18 @@ function DeleteFeedbackButton({ feedbackId }) {
 
   const onClose = () => setIsOpen(false)
   const onDelete = (e) => {
-    deleteFeedback(feedbackId);
+    deleteComment(commentId);
     toast({
       title: "Success!",
-      description: `We've removed your feedback`,
+      description: `We've removed your comment`,
       status: "success",
       duration: 4000,
       isClosable: true,
     })
     mutate(
-      ['/api/feedback', auth.user.token],
+      ['/api/comment', auth.user.token],
       async (data) => {
-        return { feedbacks: data.feedbacks.filter(feedback => feedback.id !== feedbackId) }
+        return { comments: data.comments.filter(comment => comment.id !== commentId) }
       }, false);
     onClose()
   }
@@ -44,9 +44,10 @@ function DeleteFeedbackButton({ feedbackId }) {
     <>
 
       <IconButton
-        aria-label="Delete feedback"
+        aria-label="Delete comment"
         icon={<DeleteIcon />}
         variant="ghost"
+        colorScheme="red"
         onClick={() => setIsOpen(true)}
       />
 
@@ -58,11 +59,11 @@ function DeleteFeedbackButton({ feedbackId }) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Feedback
+              Delete comment
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure, you want to delete this feedback? You can't undo this action afterwards.
+              Are you sure, you want to delete this comment? You can't undo this action afterwards.
             </AlertDialogBody>
 
             <AlertDialogFooter>
@@ -79,4 +80,4 @@ function DeleteFeedbackButton({ feedbackId }) {
     </>
   )
 }
-export default DeleteFeedbackButton;
+export default DeleteCommentButton;

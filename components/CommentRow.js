@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Tr, Td, Code, Switch } from "@chakra-ui/react";
-import DeleteFeedbackButton from './DeleteFeedbackButton'
-import { updateFeedback } from "@/lib/db";
+import DeleteCommentButton from './DeleteCommentButton'
+import { updateComment } from "@/lib/db";
 import { useAuth } from "@/lib/auth";
 import { mutate } from 'swr';
 
-const FeedbackRow = ({ id, author, route, text, status }) => {
+const CommentRow = ({ id, author, route, text, status }) => {
   const auth = useAuth();
   const [isToggled, setIsToggled] = useState(status === 'active');
 
-  const toggleFeedback = async () => {
+  const toggleComment = async () => {
 
-    await updateFeedback(id, { status: !isToggled ? 'active' : 'pending' });
+    await updateComment(id, { status: !isToggled ? 'active' : 'pending' });
     setIsToggled(!isToggled);
-    mutate(['/api/feedback', auth.user.token]);
+    mutate(['/api/comment', auth.user.token]);
   }
   return (
     <Tr key={id}>
@@ -28,14 +28,14 @@ const FeedbackRow = ({ id, author, route, text, status }) => {
           colorScheme="green"
           isChecked={isToggled}
           defaultChecked={isToggled}
-          onChange={toggleFeedback}
+          onChange={toggleComment}
         />
       </Td>
       <Td>
-        <DeleteFeedbackButton feedbackId={id} />
+        <DeleteCommentButton feedbackId={id} />
       </Td>
     </Tr>
   )
 }
 
-export default FeedbackRow;
+export default CommentRow;

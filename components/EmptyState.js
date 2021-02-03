@@ -4,7 +4,6 @@ import {
   Text,
   Box
 } from '@chakra-ui/react'
-// import AddSiteModal from './AddSiteModal'
 
 const EmptyState = ({ title, content, action }) => (
   <Box textAlign="center" m="0 auto" p={4}>

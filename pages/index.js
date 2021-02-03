@@ -1,24 +1,22 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
 import { Heading, Flex, Button, Stack, Box, Text } from "@chakra-ui/react"
-import Github from '@/components/icons/Github';
-import Google from '@/components/icons/Google';
-import { getAllFeedback, getSiteDetails } from '@/lib/db-admin';
+import { getAllComments, getSiteDetails } from '@/lib/db-admin';
 import LogginButtons from '@/components/LogginButtons';
-import FeedbackLink from '@/components/FeedbackLink';
-import Feedback from '@/components/Feedback';
+import CommentLink from '@/components/CommentLink';
+import Comment from '@/components/Comment';
 
 
 const SITE_ID = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
 
 
 export async function getStaticProps(context) {
-  const feedback = await getAllFeedback(SITE_ID);
+  const comments = await getAllComments(SITE_ID);
   const site = await getSiteDetails(SITE_ID);
 
   return {
     props: {
-      allFeedback: feedback,
+      allComments: comments,
       site
     },
     revalidate: 1
@@ -26,7 +24,7 @@ export async function getStaticProps(context) {
 }
 
 
-export default function Home({ allFeedback, site }) {
+export default function Home({ allComments, site }) {
   const auth = useAuth();
   return (
     <div>
@@ -97,18 +95,18 @@ export default function Home({ allFeedback, site }) {
           direction="column"
           minW="300px"
         >
-          <FeedbackLink siteId={SITE_ID} />
-          {allFeedback.length ? (
+          <CommentLink siteId={SITE_ID} />
+          {allComments.length ? (
             <Box overflowY="auto" minW="300px">
-              {allFeedback.map(feedback => (
-                <Feedback
-                  key={feedback.id}
+              {allComments.map((comment, index) => (
+                <Comment
+                  key={comment.id}
                   settings={{
                     icons: true,
                     timestamp: true
                   }}
-                  isLast={index === allFeedback.length - 1}
-                  {...feedback}
+                  isLast={index === allComments.length - 1}
+                  {...comment}
                 />
               ))}
             </Box>

@@ -56,7 +56,7 @@ const EditSiteModal = ({ settings, siteId }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit(onUpdateSite)}>
-          <ModalHeader fontWeight="bold">Edit Site</ModalHeader>
+          <ModalHeader fontWeight="bold">Update Site settings</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
