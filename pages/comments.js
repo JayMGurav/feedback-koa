@@ -14,6 +14,7 @@ export default function MyFeedback() {
   const { data, error } = useSWR(user ? ['/api/comment', user.token] : null, fetcher);
 
   // if (!auth?.user) {
+  // console.log(data?.comments);
   if (error) console.log(error);
   if (!data) {
     return (
@@ -49,7 +50,7 @@ export default function MyFeedback() {
         bg="white"
         borderRadius={8}
       >
-        {data.feedback?.length ? <CommentTable allComments={data.comments} /> : <EmptyState
+        {data.comments?.length ? <CommentTable allComments={data.comments} /> : <EmptyState
           title="There aren't any comments."
           content="Share your sites!🚀"
           action={null}

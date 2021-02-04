@@ -20,10 +20,10 @@ const SiteTable = ({ sites, uid }) => {
         </Tr>
       </Thead>
       <Tbody>
-        {sites.map(({ name, url, createdAt, id, ownerId, settings }) => (
+        {sites.map(({ name, url, createdAt, id, commentKey, ownerId, settings }) => (
           <Tr key={createdAt}>
             <Td>
-              <NextLink href="/site/[siteId]" as={`/site/${id}`} passHref>
+              <NextLink href="/site/[siteId]/[commentKey]" as={`/site/${id}/${commentKey}`} passHref>
                 <Link color="blue.500">{name}</Link>
               </NextLink>
             </Td>
@@ -33,7 +33,7 @@ const SiteTable = ({ sites, uid }) => {
               </Link>
             </Td>
             <Td>
-              <NextLink href="/site/[siteId]" as={`/site/${id}`} passHref>
+              <NextLink href="/site/[siteId]/[commentKey]" as={`/site/${id}/${commentKey}`} passHref>
                 <Link color="blue.500">View Comments</Link>
               </NextLink>
             </Td>

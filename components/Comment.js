@@ -18,8 +18,8 @@ export default function Comment({ author, text, createdAt, provider, isLast, set
         >
           {author}
         </Heading>
-        {settings?.icons &&
-          provider == 'github.com' ? <Github /> : <Google />
+        {settings?.icons
+          ? provider == 'github.com' ? <Github /> : <Google /> : null
         }
       </Flex>
       {settings?.timestamp && (
@@ -27,7 +27,7 @@ export default function Comment({ author, text, createdAt, provider, isLast, set
           <time>{new Date(createdAt).toLocaleString()}</time>
         </Text>
       )}
-      <Text color="gray.800" mb={4}>{text}</Text>
+      <Text color="gray.800" mt={4}>{text}</Text>
       {!isLast && (
         <Divider borderColor="gray.200" mt={6} mb={6} />
       )}

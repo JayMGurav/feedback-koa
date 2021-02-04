@@ -33,12 +33,7 @@ function AddSiteModal({ label = null }) {
       ownerId: auth.user.uid,
       createdAt: new Date().toISOString(),
       name,
-      url,
-      settings: {
-        icons: true,
-        timestamp: true,
-        ratings: false
-      }
+      url
     }
     const { id } = createSite(newSite);
     toast({

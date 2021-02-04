@@ -31,8 +31,6 @@ function MyAccount() {
               w={['3rem', '6rem']}
               h={['3rem', '6rem']}
             />
-            <Skeleton height="20px" />
-            <Skeleton height="20px" />
           </Box>
           <Box
             mt={8}
