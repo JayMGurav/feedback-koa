@@ -1,30 +1,33 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
 import { Heading, Flex, Button, Stack, Box, Text } from "@chakra-ui/react"
-import { getAllComments, getSiteDetails } from '@/lib/db-admin';
+import { getAllComments, getCommentData } from '@/lib/db-admin';
 import LogginButtons from '@/components/LogginButtons';
 import CommentLink from '@/components/CommentLink';
 import Comment from '@/components/Comment';
+import AddCommentWidget from '@/components/widgets/AddComment';
+import { CommentSectionWithoutFetching } from '@/components/widgets/CommentSection';
 
 
 const SITE_ID = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
-
+const COMMENT_KEY = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_COMMENT_KEY;
 
 export async function getStaticProps(context) {
-  const comments = await getAllComments(SITE_ID);
-  const site = await getSiteDetails(SITE_ID);
+  const commentData = await getCommentData(COMMENT_KEY);
+  const comments = await getAllComments(COMMENT_KEY);
+  // const site = await getSiteDetails(SITE_ID);
 
   return {
     props: {
       allComments: comments,
-      site
+      settings: commentData.settings
     },
     revalidate: 1
   }
 }
 
 
-export default function Home({ allComments, site }) {
+export default function Home({ allComments, settings }) {
   const auth = useAuth();
   return (
     <div>
@@ -38,14 +41,14 @@ export default function Home({ allComments, site }) {
         }} />
         <title>Feedback Koa</title>
       </Head>
-      <Flex w="full" direction={['column', 'row']} flexWrap="wrap" h="100vh">
+      <Flex w="full" direction={['column', 'row']} flexWrap="wrap" >
         <Flex
           justifyContent="center"
           alignItems="center"
           py={8}
           px={2}
           bg="gray.100"
-          flex="2"
+          flex="1"
           flexShrink="4"
         >
           <Box
@@ -86,16 +89,31 @@ export default function Home({ allComments, site }) {
               )}
           </Box>
         </Flex>
-        <Flex
+        <Box
           py={4}
-          px={4}
-          bg="gray.50"
+          bg="white"
           flex="1"
           flexShrink="1"
           direction="column"
           minW="300px"
+          overflowY="auto"
+          maxH="100vh"
         >
-          <CommentLink siteId={SITE_ID} />
+          <CommentSectionWithoutFetching
+            allComments={allComments}
+            settings={settings}
+            siteId={SITE_ID}
+            commentKey={COMMENT_KEY}
+          />
+        </Box>
+      </Flex>
+    </div >
+  )
+}
+
+
+
+{/* <CommentLink siteId={SITE_ID} />
           {allComments.length ? (
             <Box overflowY="auto" minW="300px">
               {allComments.map((comment, index) => (
@@ -112,10 +130,4 @@ export default function Home({ allComments, site }) {
             </Box>
           ) : (
             <Text mx="auto" color="gray.400" w="80%" px={2} textAlign="center">No comments yet!!, Go ahead and leave a comment above👆</Text>
-          )}
-
-        </Flex>
-      </Flex>
-    </div >
-  )
-}
+          )} */}

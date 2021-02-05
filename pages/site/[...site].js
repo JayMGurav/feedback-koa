@@ -13,24 +13,12 @@ import AddCommentWidget from '@/components/widgets/AddComment';
 
 
 const CommentPage = () => {
-  // const { user, loading } = useAuth();
-  // const inputElem = useRef(null);
   const router = useRouter();
   const slug = router.query?.site || [];
   const siteId = slug ? slug[0] : null;
   const commentKey = slug ? slug[1] : null
   const route = slug ? slug[2] : null;
 
-  // const commentApi = route
-  //   ? `/api/comment/${siteId}/${commentKey}/${route}`
-  // : `/api/comment/${siteId}/${commentKey}`;
-  // // const { data: { site } } = useSWR(`/api/site/${siteId}`, fetcher);
-  // const { data } = useSWR(`/api/comment/data/${commentKey}`, fetcher);
-  // const { data, error } = useSWR(['/api/comment/data', commentKey], (url, commentKey) => fetchData(url, { commentKey }));
-
-  // const { comments, site } = { comments: data?.comments, site: data?.site };
-  // return (<Box>   <h1>Slug: {slug.join('/')}</h1> this  {user?.email}</Box>)
-  // console.log({ data });
   return (
     <DashboardShell>
       <AddCommentWidget

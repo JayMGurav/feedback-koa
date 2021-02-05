@@ -7,7 +7,7 @@ export default function CommentLink({ siteId }) {
         Leave a comment →
       </Link>
       <Link fontSize="xs" color="blackAlpha.500" href="/" mx={2}>
-        Powered by feedback-koa
+        Powered by Feedback Koa
       </Link>
     </Flex>
   );
