@@ -1,11 +1,8 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
-import { Heading, Flex, Button, Stack, Box, Text } from "@chakra-ui/react"
+import { Heading, Flex, Button, Box, Text } from "@chakra-ui/react"
 import { getAllComments, getCommentData } from '@/lib/db-admin';
 import LogginButtons from '@/components/LogginButtons';
-import CommentLink from '@/components/CommentLink';
-import Comment from '@/components/Comment';
-import AddCommentWidget from '@/components/widgets/AddComment';
 import { CommentSectionWithoutFetching } from '@/components/widgets/CommentSection';
 
 

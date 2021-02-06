@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router'
 import { Box, Text } from '@chakra-ui/react';
 
-import { getAllComments, getAllSites, getSiteDetails } from '@/lib/db-admin';
+// import { getAllComments, getAllSites, getSiteDetails } from '@/lib/db-admin';
 import Comment from '@/components/Comment';
 import CommentLink from '@/components/CommentLink';
 // import { useAuth } from '@/lib/auth';

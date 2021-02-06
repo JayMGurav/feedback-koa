@@ -1,5 +1,4 @@
 import { getAllComments, getCommentData, getSiteDetails } from "@/lib/db-admin";
-import { auth } from "@/lib/firebase-admin";
 
 export default async function handler(req, res) {
   try {

@@ -1,6 +1,7 @@
 import { getUserSites } from "@/lib/db-admin";
 import { auth } from "@/lib/firebase-admin";
 
+
 export default async function (req, res) {
   try {
     const { uid } = await auth.verifyIdToken(req.headers.token)
