@@ -1,6 +1,6 @@
 const title =
-  'koafeedback';
-const description = 'koafeedback is the easiest way to add comments, provide feedback, collect issues, ideas or reviews to your static site.';
+  'funfeedback';
+const description = 'funfeedback is the easiest way to add comments, provide feedback, collect issues, ideas or reviews to your static site.';
 
 const SEO = {
   title,

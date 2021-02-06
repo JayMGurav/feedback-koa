@@ -1,9 +1,8 @@
 import React from 'react';
-import CommentLink from '../CommentLink';
-import TextArea from '../TextArea';
+// import CommentLink from '../CommentLink';
+import TextArea from '../../TextArea';
 
 const AddCommentWidget = ({
-  siteId,
   toAuthenticate,
   onSubmitComment,
   loading,
@@ -12,7 +11,6 @@ const AddCommentWidget = ({
 }) => {
   return (
     <>
-      <CommentLink siteId={siteId} />
       <TextArea
         toAuthenticate={toAuthenticate}
         label="Leave comment"

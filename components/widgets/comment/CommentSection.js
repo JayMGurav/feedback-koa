@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Skeleton } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
 import useSWR, { mutate } from 'swr';
 import fetcher from '@/utils/fetcher';
 import { createComment } from '@/lib/db';
 import DisplayComments from './DisplayComments';
-import CommentLink from '../CommentLink';
-import TextArea from '../TextArea';
+import CommentLink from '../../CommentLink';
+import TextArea from '../../TextArea';
 
 
 const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
   const { user, loading } = useAuth();
+  const [settings, setSetting] = useState({});
+  const [toAuthenticate, setToAuthenticate] = useState(null);
 
   const commentApi = route
     ? `/api/comment/${siteId}/${commentKey}/${route}`
     : `/api/comment/${siteId}/${commentKey}`;
-  const { data } = useSWR(commentApi, fetcher);
-  const { authentication, ...settings } = data?.commentData?.settings;
+
+  // console.log({ in: 'commentSec', siteId, commentKey })
+  const { data } = useSWR(commentApi, fetcher, {
+    onSuccess: (data) => {
+      setSetting(data.commentData.settings);
+      setToAuthenticate(data.commentData.settings.authentication)
+    }
+  });
 
   const addComment = (comment) => {
     const commentData = {
@@ -25,7 +33,7 @@ const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
       createdAt: new Date().toISOString(),
       status: 'active',
     }
-    const newComment = authentication ? {
+    const newComment = toAuthenticate ? {
       provider: user.provider,
       author: user.name,
       authorId: user.uid,
@@ -51,9 +59,9 @@ const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
       maxW="800px"
       px={4}
     >
-      <CommentLink siteId={siteId} />
+      <CommentLink paths={[`${siteId}`, `${commentKey}`, `${route}`]} />
       <TextArea
-        toAuthenticate={authentication}
+        toAuthenticate={toAuthenticate}
         label="Leave comment"
         loginTextInfo="Login to leave comment"
         onSubmitHandler={addComment}
@@ -61,10 +69,16 @@ const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
         loading={loading}
         btnStyles={btnStyles}
       />
-      <DisplayComments
-        comments={data?.comments}
-        settings={settings}
-      />
+      {data ?
+        <DisplayComments
+          comments={data?.comments}
+          settings={settings}
+        />
+        :
+        <>
+          <Skeleton height="100px" width="full" my={6} h="80vh" borderRadius={4} />
+        </>
+      }
     </Flex>
   )
 }
@@ -81,11 +95,6 @@ export const CommentSectionWithoutFetching = ({
   const { user, loading } = useAuth();
   const [comments, setComments] = useState(allComments);
   const { authentication, ...commentDisplaySettings } = settings;
-
-
-  // const commentApi = route
-  //   ? `/api/comment/${siteId}/${commentKey}/${route}`
-  //   : `/api/comment/${siteId}/${commentKey}`;
 
   const addComment = (comment) => {
     const commentData = {
@@ -122,7 +131,7 @@ export const CommentSectionWithoutFetching = ({
       // grow="1"
       overflowY="auto"
     >
-      <CommentLink siteId={siteId} />
+      <CommentLink paths={[`${siteId}`, `${commentKey}`, `${route}`]} />
       <TextArea
         toAuthenticate={authentication}
         label="Leave comment"

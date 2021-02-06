@@ -17,7 +17,6 @@ const TextArea = ({
 }) => {
   const [value, setValue] = useState("");
   // const { user, loading } = useAuth();
-  console.log(toAuthenticate)
   const styles = {
     colorScheme: btnStyles?.colorScheme || "blue",
     variant: btnStyles?.variant || "solid",

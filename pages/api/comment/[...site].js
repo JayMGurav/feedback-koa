@@ -5,8 +5,8 @@ export default async function handler(req, res) {
     const [siteId, commentKey, route] = req.query.site;
     let comments = [], commentData = {};
     const site = await getSiteDetails(siteId);
-    // console.log(site.commentKey == commentKey)
-    if (site) {
+    // console.log({ in: 'api', siteId, commentKey, route })
+    if (site.commentKey) {
       if (site.commentKey == commentKey) {
         commentData = await getCommentData(commentKey);
         comments = await getAllComments(commentKey, route);

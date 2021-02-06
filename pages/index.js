@@ -1,31 +1,32 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
 import { Heading, Flex, Button, Box, Text } from "@chakra-ui/react"
-import { getAllComments, getCommentData } from '@/lib/db-admin';
+// import { getAllComments, getCommentData } from '@/lib/db-admin';
 import LogginButtons from '@/components/LogginButtons';
-import { CommentSectionWithoutFetching } from '@/components/widgets/CommentSection';
+import CommentSection from '@/components/widgets/comment/CommentSection';
+
+
+// export async function getStaticProps(context) {
+//   const commentData = await getCommentData(COMMENT_KEY);
+//   const comments = await getAllComments(COMMENT_KEY);
+//   // const site = await getSiteDetails(SITE_ID);
+
+//   return {
+//     props: {
+//       allComments: comments,
+//       settings: commentData.settings
+//     },
+//     revalidate: 1
+//   }
+// }
 
 
 const SITE_ID = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
 const COMMENT_KEY = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_COMMENT_KEY;
 
-export async function getStaticProps(context) {
-  const commentData = await getCommentData(COMMENT_KEY);
-  const comments = await getAllComments(COMMENT_KEY);
-  // const site = await getSiteDetails(SITE_ID);
-
-  return {
-    props: {
-      allComments: comments,
-      settings: commentData.settings
-    },
-    revalidate: 1
-  }
-}
-
-
-export default function Home({ allComments, settings }) {
+export default function Home() {
   const auth = useAuth();
+
   return (
     <div>
       <Head>
@@ -38,15 +39,16 @@ export default function Home({ allComments, settings }) {
         }} />
         <title>Feedback Koa</title>
       </Head>
-      <Flex w="full" direction={['column', 'row']} flexWrap="wrap" >
+      <Flex w="full" h="full" direction={['column', 'row']} flexWrap="wrap" >
         <Flex
           justifyContent="center"
           alignItems="center"
           py={8}
           px={2}
           bg="gray.100"
-          flex="1"
+          flex="2"
           flexShrink="4"
+          basis="auto"
         >
           <Box
             as="main"
@@ -91,16 +93,21 @@ export default function Home({ allComments, settings }) {
           bg="white"
           flex="1"
           flexShrink="1"
+          basis="auto"
           direction="column"
           minW="300px"
           overflowY="auto"
           maxH="100vh"
         >
-          <CommentSectionWithoutFetching
+          {/* <CommentSectionWithoutFetching
             allComments={allComments}
             settings={settings}
             siteId={SITE_ID}
             commentKey={COMMENT_KEY}
+          /> */}
+          <CommentSection
+            siteId={`${SITE_ID}`}
+            commentKey={`${COMMENT_KEY}`}
           />
         </Box>
       </Flex>
@@ -108,23 +115,3 @@ export default function Home({ allComments, settings }) {
   )
 }
 
-
-
-{/* <CommentLink siteId={SITE_ID} />
-          {allComments.length ? (
-            <Box overflowY="auto" minW="300px">
-              {allComments.map((comment, index) => (
-                <Comment
-                  key={comment.id}
-                  settings={{
-                    icons: true,
-                    timestamp: true
-                  }}
-                  isLast={index === allComments.length - 1}
-                  {...comment}
-                />
-              ))}
-            </Box>
-          ) : (
-            <Text mx="auto" color="gray.400" w="80%" px={2} textAlign="center">No comments yet!!, Go ahead and leave a comment above👆</Text>
-          )} */}

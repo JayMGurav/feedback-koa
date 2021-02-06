@@ -33,7 +33,7 @@ const SiteTable = ({ sites, uid }) => {
               </Link>
             </Td>
             <Td>
-              <NextLink href="/site/[siteId]/[commentKey]" as={`/site/${id}/${commentKey}`} passHref>
+              <NextLink href="/embed/comment/[siteId]/[commentKey]" as={`/embed/comment/${id}/${commentKey}`} passHref>
                 <Link color="blue.500">View Comments</Link>
               </NextLink>
             </Td>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import Comment from '../Comment';
+import Comment from '../../Comment';
 
 function DisplayComments({ comments, settings }) {
   return (

@@ -6,6 +6,7 @@ import { MDXProvider } from '@mdx-js/react';
 import myTheme from "@/styles/theme"
 import SEO from "../next-seo.config"
 import { DefaultSeo } from 'next-seo';
+import MDXComponents from "@/components/mdx";
 
 const theme = extendTheme(myTheme);
 
@@ -13,10 +14,10 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider resetCSS={true} theme={theme}>
       <AuthProvider>
-        {/* <MDXProvider components={MDXComponents}> */}
-        <DefaultSeo {...SEO} />
-        <Component {...pageProps} />
-        {/* </MDXProvider> */}
+        <MDXProvider components={MDXComponents}>
+          <DefaultSeo {...SEO} />
+          <Component {...pageProps} />
+        </MDXProvider>
       </AuthProvider>
     </ChakraProvider>
   )

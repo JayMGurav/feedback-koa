@@ -9,7 +9,7 @@ import fetcher, { fetchData } from '@/utils/fetcher';
 import DashboardShell from '@/components/DashbordShell';
 import useSWR, { mutate } from 'swr';
 import LogginButtons from '@/components/LogginButtons';
-import AddCommentWidget from '@/components/widgets/AddComment';
+import AddCommentWidget from '@/components/widgets/comment/AddComment';
 
 
 const CommentPage = () => {
@@ -21,12 +21,12 @@ const CommentPage = () => {
 
   return (
     <DashboardShell>
-      <AddCommentWidget
-        siteId={siteId}
+      {/* <AddCommentWidget
         commentKey={commentKey}
         route={route}
         toAuthenticate={true}
-      />
+      /> */}
+      <p>Hello this is gonna change soon</p>
     </DashboardShell>
   );
 }
