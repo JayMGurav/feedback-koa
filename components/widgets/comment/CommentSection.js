@@ -94,7 +94,7 @@ export const CommentSectionWithoutFetching = ({
 }) => {
   const { user, loading } = useAuth();
   const [comments, setComments] = useState(allComments);
-  const { authentication, ...commentDisplaySettings } = settings;
+  // const { authentication, ...commentDisplaySettings } = settings;
 
   const addComment = (comment) => {
     const commentData = {
@@ -133,17 +133,22 @@ export const CommentSectionWithoutFetching = ({
     >
       <CommentLink paths={[`${siteId}`, `${commentKey}`, `${route}`]} />
       <TextArea
-        toAuthenticate={authentication}
+        toAuthenticate={settings?.authentication}
         label="Leave comment"
         loginTextInfo="Login to leave comment"
         onSubmitHandler={addComment}
         user={user}
         loading={loading}
       />
-      <DisplayComments
-        comments={comments}
-        settings={commentDisplaySettings}
-      />
+      {comments?.length ?
+        <DisplayComments
+          comments={comments}
+          settings={settings}
+        /> :
+        <>
+          <Skeleton height="100px" width="full" my={6} h="80vh" borderRadius={4} />
+        </>
+      }
     </Box>
   )
 }
