@@ -68,6 +68,8 @@ const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
         user={user}
         loading={loading}
         btnStyles={btnStyles}
+        placeholder="Leave a comment"
+
       />
       {data ?
         <DisplayComments
@@ -139,6 +141,8 @@ export const CommentSectionWithoutFetching = ({
         onSubmitHandler={addComment}
         user={user}
         loading={loading}
+        placeholder="Leave a comment"
+
       />
       {comments?.length ?
         <DisplayComments

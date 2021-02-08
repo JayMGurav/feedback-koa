@@ -2,7 +2,7 @@ import React from 'react';
 // import CommentLink from '../CommentLink';
 import TextArea from '../../TextArea';
 
-const AddCommentWidget = ({
+const CommentWidget = ({
   toAuthenticate,
   onSubmitComment,
   loading,
@@ -18,9 +18,10 @@ const AddCommentWidget = ({
         onSubmitHandler={onSubmitComment}
         user={user} loading={loading}
         btnStyles={btnStyles}
+        placeholder="Leave a comment"
       />
     </>
   )
 }
 
-export default AddCommentWidget;
+export default CommentWidget;

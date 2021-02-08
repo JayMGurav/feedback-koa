@@ -14,6 +14,7 @@ const TextArea = ({
   loginTextInfo,
   onSubmitHandler,
   btnStyles,
+  ...props
 }) => {
   const [value, setValue] = useState("");
   // const { user, loading } = useAuth();
@@ -41,11 +42,11 @@ const TextArea = ({
         <Textarea
           value={value}
           onChange={handleInputChange}
-          id="comment"
-          placeholder="Leave a comment"
+          id="textarea"
           isDisabled={toAuthenticate && !loading && !user}
           h="100px"
           resize="vertical"
+          {...props}
         />
         {toAuthenticate && !loading && !user ? <LogginButtons textInfo={loginTextInfo} /> : (
           <Button
