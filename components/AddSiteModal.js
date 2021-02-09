@@ -28,14 +28,14 @@ function AddSiteModal({ label = null }) {
   const { register, handleSubmit } = useForm();
 
 
-  const oncreateSite = ({ name, url }) => {
+  const oncreateSite = async ({ name, url }) => {
     const newSite = {
       ownerId: auth.user.uid,
       createdAt: new Date().toISOString(),
       name,
       url
     }
-    const { id } = createSite(newSite);
+    const { id } = await createSite(newSite);
     toast({
       title: "Success!",
       description: "We've added your site",

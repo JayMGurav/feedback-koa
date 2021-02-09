@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ConfusedFace, CryingEmoji, HappyFace, Amazing } from '@/components/icons/ReactionIcons';
 import {
-  Wrap, WrapItem, Flex,
+  Wrap,
+  Flex,
   FormErrorMessage,
   FormControl,
   FormLabel,
@@ -10,57 +10,51 @@ import {
   Input,
   Textarea,
   SlideFade,
-  Divider,
-  Heading
+  Heading,
+  Text
 } from "@chakra-ui/react"
+
+
+import ReactionEmojis from './ReactionEmojis';
 import mergeRefs from '@/utils/mergeRefs';
+import { createFeedback } from '@/lib/db';
+import FeedbackLink from '@/components/FeedbackLink';
 
 
-const ReactionEmojiWrapper = ({ onClickhandler, reaction }) => {
-  const EmojiArray = [
-    { component: CryingEmoji, value: "worst" },
-    { component: ConfusedFace, value: "bad" },
-    { component: HappyFace, value: "good" },
-    { component: Amazing, value: "amazing" }
-  ]
-  return (
-    <Wrap spacing={8} align="center" my={4} justify="center" width="full">
-      {EmojiArray.map(({ component, value }, i) => (
-        <WrapItem
-          key={value + i}
-          filter={reaction == value ? "none " : "grayscale(100%)"}
-          transform={reaction == value ? "scale(1.3)" : "scale(1)"}
-          transition="all 0.1s cubic-bezier(.47,.02,.54,.99)"
-          _hover={{
-            filter: "none",
-            cursor: "pointer",
-            transform: "scale(1.3)"
-          }}
-          onClick={() => onClickhandler(value)}
-        >
-          {React.createElement(component)}
-        </WrapItem>
-      ))}
-    </Wrap>
-  )
-}
 
-
-function FeedbackWidget({ title, bgColor }) {
-  const [reaction, setReaction] = useState(null);
+function FeedbackWidget({ feedbackKey, title, route, siteId, borderColor }) {
+  const [reaction, setReaction] = useState(false);
+  const [statusMsg, setStatusMsg] = useState({});
+  const [loading, setLoading] = useState(false);
   const initialFocusRef = React.useRef()
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = data => {
-    console.log({ ...data, reaction });
+  const { register, handleSubmit, reset, errors } = useForm();
+
+
+  const onSubmit = async (data, e) => {
+    const newFeedback = {
+      route: route || '/',
+      createdAt: new Date().toISOString(),
+      reaction: reaction,
+      ...data
+    }
+    setLoading(true);
+    await createFeedback(feedbackKey, newFeedback);
+    console.log(newFeedback);
+    setLoading(false);
+    e.target.reset()
+    setReaction(false);
+    setStatusMsg({ msg: "Thankyou for your feedback!!🎉", color: "blue.500" });
   };
-  console.log(errors);
 
   const onReactionClicked = (reaction) => {
     if (initialFocusRef.current) {
       initialFocusRef.current.focus();
     }
     setReaction(reaction);
+    setStatusMsg({ msg: "Go ahead tell us how you feel...", color: "blue.500" });
   }
+
+
   return (
     <>
       <Flex
@@ -70,24 +64,21 @@ function FeedbackWidget({ title, bgColor }) {
         maxW="600px"
         p={4}
         my={4}
-        bg="gray.50"
-        borderRadius={8}
       >
-        <Divider size="100px" />
+        <FeedbackLink />
+        <hr color="gray.500" />
         <Heading as="h5" size="sm" my={8} textAlign="center">{title}</Heading>
-        <Wrap spacing={8} align="center" justify="center" mb={16} width="full">
-          <ReactionEmojiWrapper reaction={reaction} onClickhandler={onReactionClicked} />
-        </Wrap>
+        <ReactionEmojis reaction={reaction} onClickhandler={onReactionClicked} />
         <SlideFade in={reaction} offsetY="20px" unmountOnExit >
-          <form onSubmit={handleSubmit(onSubmit)} w="full">
-            <Flex direction={['column', 'row']} >
+          <form onSubmit={handleSubmit(onSubmit)} w="full" >
+            <Flex direction={['column', 'row']} mt={8}>
               <FormControl
                 id="email"
                 mt={2}
                 mr={2}
                 isInvalid={errors?.email}
               >
-                <FormLabel fontSize="sm" color="gray.600">EMAIL</FormLabel>
+                <FormLabel fontSize="xs" color="gray.600" fontWeight="normal">EMAIL</FormLabel>
                 <Input
                   ref={mergeRefs(initialFocusRef, register({
                     required: { value: true, message: "Email is required" },
@@ -105,7 +96,7 @@ function FeedbackWidget({ title, bgColor }) {
                 mt={2}
                 isInvalid={errors?.fullname ? true : false}
               >
-                <FormLabel fontSize="sm" color="gray.600">FULL NAME</FormLabel>
+                <FormLabel fontSize="xs" color="gray.600" fontWeight="normal">FULL NAME</FormLabel>
                 <Input
                   variant="outline"
                   errorBorderColor="red.200"
@@ -123,7 +114,7 @@ function FeedbackWidget({ title, bgColor }) {
               mt={4}
               isInvalid={errors?.feedback ? true : false}
             >
-              <FormLabel fontSize="sm" color="gray.600">FEEDBACK</FormLabel>
+              <FormLabel fontSize="xs" color="gray.600" fontWeight="normal">FEEDBACK</FormLabel>
               <Textarea
                 ref={register({
                   required: { value: true, message: "Your Feedback is required" }
@@ -137,10 +128,20 @@ function FeedbackWidget({ title, bgColor }) {
               />
               <FormErrorMessage>{errors?.feedback?.message}</FormErrorMessage>
             </FormControl>
-            <Button mt={4} mb={16} colorScheme="blue" size="sm" type="submit">Send</Button>
+            <Button
+              isLoading={loading}
+              loadingText="Sending..."
+              mt={4}
+              mb={16}
+              colorScheme="blue"
+              size="sm"
+              type="submit"
+            >Send
+            </Button>
           </form>
         </SlideFade >
-        <Divider />
+        <Text color={statusMsg?.color} textAlign="center">{statusMsg?.msg}</Text>
+        <hr color="gray.500" />
       </Flex >
     </>
   );
