@@ -26,7 +26,7 @@ const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
     }
   });
 
-  const addComment = (comment) => {
+  const addComment = async (comment) => {
     const commentData = {
       route: route || '/',
       text: comment,
@@ -41,7 +41,7 @@ const CommentSection = ({ siteId, commentKey, route, btnStyles }) => {
     } : commentData;
 
 
-    createComment(commentKey, newComment);
+    await createComment(siteId, commentKey, newComment);
     mutate(
       commentApi,
       async (data) => ({
@@ -98,7 +98,7 @@ export const CommentSectionWithoutFetching = ({
   const [comments, setComments] = useState(allComments);
   // const { authentication, ...commentDisplaySettings } = settings;
 
-  const addComment = (comment) => {
+  const addComment = async (comment) => {
     const commentData = {
       route: route || '/',
       text: comment,
@@ -112,7 +112,7 @@ export const CommentSectionWithoutFetching = ({
       ...commentData
     } : commentData;
 
-    createComment(commentKey, newComment);
+    await createComment(siteId, commentKey, newComment);
     setComments([newComment, ...comments]);
     // mutate(
     //   commentApi,

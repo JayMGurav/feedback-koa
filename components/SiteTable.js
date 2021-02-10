@@ -23,7 +23,7 @@ const SiteTable = ({ sites, uid }) => {
         {sites.map(({ name, url, createdAt, id, commentKey, ownerId, settings }) => (
           <Tr key={createdAt}>
             <Td>
-              <NextLink href="/site/[siteId]/[commentKey]" as={`/site/${id}/${commentKey}`} passHref>
+              <NextLink href="/site/[siteId]/" as={`/site/${id}`} passHref>
                 <Link color="blue.500">{name}</Link>
               </NextLink>
             </Td>

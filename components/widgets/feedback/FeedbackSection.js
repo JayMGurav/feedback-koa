@@ -38,7 +38,7 @@ function FeedbackWidget({ feedbackKey, title, route, siteId, borderColor }) {
       ...data
     }
     setLoading(true);
-    await createFeedback(feedbackKey, newFeedback);
+    await createFeedback(siteId, feedbackKey, newFeedback);
     console.log(newFeedback);
     setLoading(false);
     e.target.reset()

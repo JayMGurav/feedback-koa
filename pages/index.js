@@ -34,6 +34,8 @@ export default function Home() {
           __html: `
           if (document.cookie && document.cookie.includes('feedback_koa_auth')) {
             window.location.href = "/sites"
+          }else{
+            window.location.href = "/"
           }
           `
         }} />
