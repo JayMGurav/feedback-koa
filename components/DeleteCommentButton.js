@@ -27,7 +27,7 @@ function DeleteCommentButton({ commentId }) {
     deleteComment(commentId);
     toast({
       title: "Success!",
-      description: `We've removed your comment`,
+      description: `Successfully removed a comment`,
       status: "success",
       duration: 4000,
       isClosable: true,
@@ -42,7 +42,6 @@ function DeleteCommentButton({ commentId }) {
 
   return (
     <>
-
       <IconButton
         aria-label="Delete comment"
         icon={<DeleteIcon />}

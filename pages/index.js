@@ -1,14 +1,14 @@
 import Head from 'next/head'
 import { useAuth } from '@/lib/auth'
 import { Heading, Flex, Button, Box, Text } from "@chakra-ui/react"
-// import { getAllComments, getCommentData } from '@/lib/db-admin';
+// import { getAllSiteComments, getCommentData } from '@/lib/db-admin';
 import LogginButtons from '@/components/LogginButtons';
 import CommentSection from '@/components/widgets/comment/CommentSection';
 
 
 // export async function getStaticProps(context) {
 //   const commentData = await getCommentData(COMMENT_KEY);
-//   const comments = await getAllComments(COMMENT_KEY);
+//   const comments = await getAllSiteComments(COMMENT_KEY);
 //   // const site = await getSiteDetails(SITE_ID);
 
 //   return {
@@ -34,8 +34,6 @@ export default function Home() {
           __html: `
           if (document.cookie && document.cookie.includes('feedback_koa_auth')) {
             window.location.href = "/sites"
-          }else{
-            window.location.href = "/"
           }
           `
         }} />

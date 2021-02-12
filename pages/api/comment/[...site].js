@@ -1,4 +1,4 @@
-import { getAllComments, getCommentData, getSiteDetails } from "@/lib/db-admin";
+import { getAllSiteComments, getCommentData, getSiteDetails } from "@/lib/db-admin";
 
 export default async function handler(req, res) {
   try {
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (site.commentKey) {
       if (site.commentKey == commentKey) {
         commentData = await getCommentData(commentKey);
-        comments = await getAllComments(commentKey, route);
+        comments = await getAllSiteComments(commentKey, route);
       } else {
         throw new Error(`invalid commentKey: ${commentKey}`);
       }
@@ -22,4 +22,4 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
-} 
+}

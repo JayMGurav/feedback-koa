@@ -8,8 +8,6 @@ import useSWR, { mutate } from 'swr';
 import {
   Box,
   Code,
-  Divider,
-  Flex,
   Heading,
   Link,
   Stack,
@@ -35,8 +33,6 @@ const SiteDetailsPage = () => {
 
   const loading = !data && !error;
   if (error) console.log(error);
-  console.log(data);
-
   if (loading) {
     return (
       <DashboardShell>
@@ -76,7 +72,7 @@ const SiteDetailsPage = () => {
             <StatLabel>Total Comments</StatLabel>
             <StatNumber >{data.commentCount}</StatNumber>
             <StatHelpText>
-              <NextLink href="/comment/[siteId]/[commentKey]" as={`/site/${data.id}/${data.commentKey}`} passHref>
+              <NextLink href="/comment/[siteId]/[commentKey]/" as={`/comment/${data.id}/${data.commentKey}/`} passHref>
                 <Link color="blue.500">All Comments</Link>
               </NextLink>
             </StatHelpText>
@@ -85,7 +81,7 @@ const SiteDetailsPage = () => {
             <StatLabel>Total Feebacks</StatLabel>
             <StatNumber >{data.feedbackCount}</StatNumber>
             <StatHelpText>
-              <NextLink href="/feedback/[siteId]/[feedbackKey]" as={`/site/${data.id}/${data.feedbackKey}`} passHref>
+              <NextLink href="/feedback/[siteId]/[feedbackKey]" as={`/feedback/${data.id}/${data.feedbackKey}`} passHref>
                 <Link color="blue.500">All Feedbacks</Link>
               </NextLink>
             </StatHelpText>

@@ -53,7 +53,8 @@ const DashboardShell = ({ children }) => {
       <Flex
         flexDirection="row"
         backgroundColor="blackAlpha.50"
-        p={8}
+        py={8}
+        px={2}
         flex="1"
         overflow="auto"
       >
