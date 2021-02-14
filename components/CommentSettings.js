@@ -1,12 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import useSWR, { mutate } from 'swr';
 import {
-  Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
-  Heading,
   IconButton,
   Modal,
   ModalBody,
@@ -15,10 +12,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   Spinner,
   Switch,
-  Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -26,12 +21,10 @@ import { useForm } from 'react-hook-form';
 import { updateComment } from '@/lib/db';
 import { useAuth } from '@/lib/auth';
 import fetcher from '@/utils/fetcher';
-import SampleComment from './SampleComment';
-import { SettingsIcon, SpinnerIcon } from '@chakra-ui/icons';
+import { SettingsIcon } from '@chakra-ui/icons';
 
 
 function CommentSettings({ commentKey }) {
-  const { user } = useAuth();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, register } = useForm();
@@ -43,7 +36,6 @@ function CommentSettings({ commentKey }) {
 
   if (loading) {
     return (
-      // <Skeleton w="30px" h="30px" borderRadius="20%" />
       <IconButton
         aria-label="Loading Comment Settings"
         icon={<Spinner size="xs" />}

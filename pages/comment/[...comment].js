@@ -5,13 +5,9 @@ import {
   Box,
   Divider,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  HStack,
   Link,
   Skeleton,
-  Switch,
   Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link'
@@ -51,7 +47,7 @@ const SiteCommentsPage = () => {
                 <Skeleton ml={2} w="50px" h="16px" display="inline-block" />
               ) :
                 (
-                  <NextLink href="/data?.site/[siteId]/" as={`/feedback/${data?.site.id}`} passHref>
+                  <NextLink href="/site/[siteId]/" as={`/site/${data?.site.id}`} passHref>
                     <Link color="blue.500">{(data?.site.name).toUpperCase()}</Link>
                   </NextLink>
                 )
@@ -60,6 +56,7 @@ const SiteCommentsPage = () => {
           </Box>
           <CommentSettings commentKey={commentKey} />
         </Flex>
+        <Divider />
         <Box p={4} bg="gray.50">
           <SampleComment commentKey={commentKey} />
         </Box>
