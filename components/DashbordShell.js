@@ -56,7 +56,6 @@ const DashboardShell = ({ children }) => {
         py={8}
         px={2}
         flex="1"
-        overflow="auto"
       >
         <Flex
           w="100%"

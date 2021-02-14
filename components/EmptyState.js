@@ -7,7 +7,7 @@ import {
 
 const EmptyState = ({ title, content, action }) => (
   <Box textAlign="center" m="0 auto" p={4}>
-    <Heading as="h2" size="lg">{title}</Heading>
+    <Heading as="h2" size="md">{title}</Heading>
     <Text mb={6}>{content}</Text>
     {action && action}
   </Box>

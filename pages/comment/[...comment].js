@@ -1,13 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router'
-
-import { useAuth } from '@/lib/auth';
-import fetcher, { fetchData } from '@/utils/fetcher';
-import DashboardShell from '@/components/DashbordShell';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import {
   Box,
-  Code,
   Divider,
   Flex,
   FormControl,
@@ -15,36 +10,22 @@ import {
   Heading,
   HStack,
   Link,
-  Stack,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
+  Skeleton,
   Switch,
   Text,
 } from '@chakra-ui/react';
-import { ExternalLinkIcon, WarningIcon } from '@chakra-ui/icons';
 import NextLink from 'next/link'
-import Comment from '@/components/Comment';
 
-function SampleComment({ settings }) {
-  const sampleComment = {
-    author: "John Doe",
-    text: "This is just a sample comment, The comments on your site will look similar to this comment.", createdAt: new Date().toISOString(),
-    provider: "google.com",
-    isLast: true,
-    settings
-  }
 
-  return (
-    <Box px={2} mb={6}>
-      <Text size="md" my={2} color="gray.500" fontWeight="bold">Sample comment</Text>
-      <Box bg="white" p={4} >
-        <Comment {...sampleComment} />
-      </Box>
-    </Box>
-  )
-}
+import fetcher from '@/utils/fetcher';
+import { useAuth } from '@/lib/auth';
+import DashboardShell from '@/components/DashbordShell';
+import EmptyState from '@/components/EmptyState';
+import CommentTable from '@/components/CommentTable';
+import SampleComment from '@/components/SampleComment';
+import CommentSettings from '../../components/CommentSettings';
+
+
 
 const SiteCommentsPage = () => {
   const { user } = useAuth();
@@ -55,107 +36,41 @@ const SiteCommentsPage = () => {
 
   const loading = !data && !error;
   if (error) console.log(error);
-  console.log(data);
 
-  if (loading) {
-    return (
-      <DashboardShell>
-        <Box
-          mt={4}
-          p={4}
-          overflowX="auto"
-          overflowY="hidden"
-          bg="white"
-          borderRadius={8}
-        >
-          Loading,,,
-        </Box>
-      </DashboardShell>
-    )
-  }
-
-
-  function CommentSettings({ settings }) {
-    return (
-      <Box px={2} mb={6} >
-        <Text size="md" my={2} color="gray.500" fontWeight="bold">Comment settings</Text>
-        <Flex direction={["column", "row"]} w="100%" justify="space-between">
-          <Box minW="30%" maxW="full" bg="white" borderRadius={6} p={5} borderWidth="1px">
-            <Heading fontSize="sm">Authenticate comments</Heading>
-            <Switch
-              id="email-alerts"
-              size="md"
-              mt={3}
-              colorScheme="green"
-              defaultChecked={settings.authentication}
-              onChange={() => console.log({ authentication: 'clicked' })}
-            />
-          </Box>
-          <Box minW="30%" maxW="full" bg="white" borderRadius={6} p={5} borderWidth="1px" >
-            <Heading fontSize="sm">View icons</Heading>
-            <Switch
-              id="email-alerts"
-              size="md"
-              mt={3}
-              colorScheme="green"
-              defaultChecked={settings.icons}
-              onChange={() => console.log({ icons: 'clicked' })}
-            />
-          </Box>
-          <Box minW="30%" maxW="full" bg="white" borderRadius={6} p={5} borderWidth="1px">
-            <Heading fontSize="sm">View timestamp</Heading>
-            <Switch
-              id="email-alerts"
-              size="md"
-              mt={3}
-              colorScheme="green"
-              defaultChecked={settings.timestamp}
-              onChange={() => console.log({ timestamp: 'clicked' })}
-            />
-          </Box>
-        </Flex>
-      </Box>
-    )
-  }
-
-  const { site, commentData, comments } = data;
   return (
     <DashboardShell>
       <Box
-        mt={4}
-        // overflow="auto"
         bg="white"
         borderRadius={8}
       >
-        <Box bg="gray.50" p={4} mb={4} pb={8}>
-          <HStack mb={6} py={6} px={4} alignItems="center" justify="space-between">
-            <Box>
-              <Heading as="h1" >Comments</Heading>
-              <Text fontWeight="bold" fontSize="xs">FOR {" "}
-                <NextLink href="/site/[siteId]/" as={`/feedback/${commentData.siteId}`} passHref>
-                  <Link color="blue.500">{(site.name).toUpperCase()}</Link>
-                </NextLink>
-              </Text>
-            </Box>
-            <FormControl textAlign="center" width="max-content">
-              <FormLabel htmlFor="comments" mt="0" fontSize="xs">
-                enabled?
-            </FormLabel>
-              <Switch
-                id="enabled-commenting"
-                size="md"
-                colorScheme="green" defaultChecked={commentData.enabled}
-                onChange={() => console.log({ enable: 'clicked' })} />
-            </FormControl>
-          </HStack>
-          <Divider />
-          <CommentSettings settings={commentData.settings} />
-          <Divider />
-          <SampleComment settings={commentData.settings} />
-          {/* <Divider /> */}
+        <Flex bg="gray.50" p={4} justify="space-between" align="center" >
+          <Box>
+            <Heading as="h1" >Comments</Heading>
+            <Text fontWeight="bold" fontSize="xs">FOR {" "}
+              {loading ? (
+                <Skeleton ml={2} w="50px" h="16px" display="inline-block" />
+              ) :
+                (
+                  <NextLink href="/data?.site/[siteId]/" as={`/feedback/${data?.site.id}`} passHref>
+                    <Link color="blue.500">{(data?.site.name).toUpperCase()}</Link>
+                  </NextLink>
+                )
+              }
+            </Text>
+          </Box>
+          <CommentSettings commentKey={commentKey} />
+        </Flex>
+        <Box p={4} bg="gray.50">
+          <SampleComment commentKey={commentKey} />
         </Box>
-        <Box>
-
+        <Box p={4} >
+          {loading ? <Skeleton h="100px" w="full" /> : data?.comments?.length ?
+            <CommentTable allComments={data?.comments} />
+            : <EmptyState
+              title="There are no comments for this site"
+              content="Share your wonders, get your feedback comments 🚀"
+              action={null}
+            />}
         </Box>
       </Box>
     </DashboardShell >

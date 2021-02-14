@@ -1,34 +1,62 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-const {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+import React, { useRef, useState } from 'react';
+import useSWR, { mutate } from 'swr';
+import {
+  Box,
+  Button,
+  Flex,
   FormControl,
   FormLabel,
-  Button,
+  Heading,
+  IconButton,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Skeleton,
+  Spinner,
   Switch,
-  useToast,
+  Text,
   useDisclosure,
-  IconButton
-} = require("@chakra-ui/react")
-import { SettingsIcon } from '@chakra-ui/icons';
+  useToast,
+} from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { updateComment } from '@/lib/db';
+import { useAuth } from '@/lib/auth';
+import fetcher from '@/utils/fetcher';
+import SampleComment from './SampleComment';
+import { SettingsIcon, SpinnerIcon } from '@chakra-ui/icons';
 
-import { updateSite } from '@/lib/db';
-import { mutate } from 'swr';
 
-
-const EditSiteModal = ({ settings, siteId }) => {
+function CommentSettings({ commentKey }) {
+  const { user } = useAuth();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, register } = useForm();
 
-  const onUpdateSite = async (newSetting) => {
-    await updateSite(siteId, {
+  const { data, error } = useSWR(`/api/comment/${commentKey}`, fetcher);
+  const loading = !data && !error;
+  if (error) console.log(error);
+
+
+  if (loading) {
+    return (
+      // <Skeleton w="30px" h="30px" borderRadius="20%" />
+      <IconButton
+        aria-label="Loading Comment Settings"
+        icon={<Spinner size="xs" />}
+        variant="solid"
+        onClick={onOpen}
+        mx={1}
+        colorScheme="gray"
+      />
+    )
+  }
+
+  const onUpdateCommentSettings = async (newSetting) => {
+    await updateComment(commentKey, {
       settings: newSetting
     })
     toast({
@@ -38,14 +66,16 @@ const EditSiteModal = ({ settings, siteId }) => {
       duration: 4000,
       isClosable: true
     });
-    mutate(`/api/site/${siteId}`);
+    mutate(`/api/comment/${commentKey}`);
     onClose();
   }
+
+  const { settings } = data?.commentData;
 
   return (
     <>
       <IconButton
-        aria-label="Site Settings"
+        aria-label="Comment Settings"
         icon={<SettingsIcon />}
         variant="solid"
         onClick={onOpen}
@@ -55,20 +85,20 @@ const EditSiteModal = ({ settings, siteId }) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent as="form" onSubmit={handleSubmit(onUpdateSite)}>
-          <ModalHeader fontWeight="bold">Update Site settings</ModalHeader>
+        <ModalContent as="form" onSubmit={handleSubmit(onUpdateCommentSettings)}>
+          <ModalHeader fontWeight="bold">Update Comment settings</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
               <Switch
-                key={settings?.timestamp}
-                name="timestamp"
+                key={settings?.authentication}
+                name="authentication"
                 ref={register()}
                 color="green"
-                defaultChecked={settings?.timestamp}
+                defaultChecked={settings?.authentication}
               />
               <FormLabel ml={2} htmlFor="show-timestamp">
-                Show Timestamp
+                Authenticate comments
               </FormLabel>
             </FormControl>
             <FormControl>
@@ -85,14 +115,14 @@ const EditSiteModal = ({ settings, siteId }) => {
             </FormControl>
             <FormControl>
               <Switch
-                key={settings?.ratings}
-                name="ratings"
+                key={settings?.timestamp}
+                name="timestamp"
                 ref={register()}
                 color="green"
-                defaultChecked={settings?.ratings}
+                defaultChecked={settings?.timestamp}
               />
-              <FormLabel ml={2} htmlFor="show-ratings">
-                Show Ratings
+              <FormLabel ml={2} htmlFor="show-timestamp">
+                Show timestamp
               </FormLabel>
             </FormControl>
           </ModalBody>
@@ -116,4 +146,7 @@ const EditSiteModal = ({ settings, siteId }) => {
   );
 }
 
-export default EditSiteModal;
+export default CommentSettings;
+
+
+
