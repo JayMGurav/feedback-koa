@@ -4,7 +4,7 @@ import Comment from '../../Comment';
 
 function DisplayComments({ comments, settings }) {
   return (
-    <Box py={4}>
+    <Box py={4} minH="60vh">
       {comments?.length ? comments?.map((comment, index) => (
         <Comment
           key={comment.createdAt}

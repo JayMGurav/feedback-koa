@@ -20,7 +20,7 @@ export default function Comment({ author, text, createdAt, provider, isLast, set
 
   return (
     <Box maxWidth="700px" w="full">
-      {author && <Flex align="center">
+      {settings?.authentication && author && <Flex align="center">
         <Heading
           size="sm"
           as="h3"
@@ -32,7 +32,7 @@ export default function Comment({ author, text, createdAt, provider, isLast, set
         >
           {author}
         </Heading>
-        {settings?.icons && iconToDisplay}
+        {settings?.authentication && settings?.icons && iconToDisplay}
       </Flex>
       }
       {settings?.timestamp && (

@@ -2,6 +2,7 @@
 
 #secrets
 feedback-koa-firebase-admin.json
+firestore.rules
 
 # dependencies
 /node_modules

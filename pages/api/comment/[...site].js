@@ -2,10 +2,11 @@ import { getAllSiteComments, getCommentData, getSiteDetails } from "@/lib/db-adm
 
 export default async function handler(req, res) {
   try {
+    // console.log(req.query)
     const [siteId, commentKey, route] = req.query.site;
     let comments = [], commentData = {};
     const site = await getSiteDetails(siteId);
-    // console.log({ in: 'api', siteId, commentKey, route })
+    // console.log({ in: 'api', site })
     if (site.commentKey) {
       if (site.commentKey == commentKey) {
         commentData = await getCommentData(commentKey);
